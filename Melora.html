@@ -1,0 +1,2457 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MÉLORA — Pâtisserie &amp; Desserts</title>
+
+  <!-- Google Fonts: Cormorant Garamond (Editorial Serif) & Plus Jakarta Sans (Clean Geometric Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            melora: {
+              page: '#FDF8F4',
+              cream: '#FAF0E8',
+              blush: '#F5E4D8',
+              peach: '#EED6C6',
+              cocoaDark: '#2C1A12',
+              cocoaMid: '#4A2E20',
+              warm: '#9E5838',
+              gold: '#C69756',
+              primary: '#2B1B14',
+              muted: '#745D52',
+              border: '#E9D6C9',
+              rose: '#E3A9AE',
+              roseDeep: '#BE6E76'
+            }
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif']
+          },
+          boxShadow: {
+            editorial: '0 22px 50px -16px rgba(43, 27, 20, 0.10)',
+            card: '0 10px 30px -10px rgba(43, 27, 20, 0.07)',
+            cocoa: '0 28px 65px -15px rgba(44, 26, 18, 0.38)'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --bg-page: #FDF8F4;
+      --surface-cream: #FAF0E8;
+      --surface-blush: #F5E4D8;
+      --cocoa-dark: #2C1A12;
+      --cocoa-mid: #4A2E20;
+      --accent-warm: #9E5838;
+      --accent-gold: #C69756;
+      --text-primary: #2B1B14;
+      --text-muted: #745D52;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, .font-editorial {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+    }
+
+    /* Editorial Surface Gradients */
+    .hero-silk-bg {
+      background:
+        radial-gradient(circle at 76% 44%, #F9DFCE 0%, #F5E4D8 45%, #FDF8F4 88%);
+    }
+
+    .cocoa-experience-bg {
+      background: linear-gradient(112deg, #2C1A12 0%, #3E2418 52%, #593524 100%);
+    }
+
+    .seasonal-surface {
+      background: linear-gradient(135deg, #FCF3EC 0%, #F3DEC9 100%);
+    }
+
+    .gifting-surface {
+      background: linear-gradient(135deg, #FAECE7 0%, #F0D2CA 100%);
+    }
+
+    /* Ambient Floating Petal & Ribbon Animations */
+    @keyframes petalDrift {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(7deg); }
+    }
+
+    @keyframes petalFloatAlt {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(9px) rotate(-6deg); }
+    }
+
+    .animate-petal {
+      animation: petalDrift 6.5s ease-in-out infinite;
+    }
+
+    .animate-petal-alt {
+      animation: petalFloatAlt 7.5s ease-in-out infinite;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .animate-petal,
+      .animate-petal-alt {
+        animation: none !important;
+      }
+      * {
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* Smooth Grid Accordion Transition */
+    .accordion-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .accordion-panel.is-open {
+      grid-template-rows: 1fr;
+    }
+
+    .accordion-inner {
+      overflow: hidden;
+    }
+
+    /* Accessible Focus Ring */
+    :focus-visible {
+      outline: 2px solid var(--accent-warm);
+      outline-offset: 2px;
+    }
+
+    /* Hide Horizontal Scrollbar */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FDF8F4;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D7B8A5;
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9E5838;
+    }
+  </style>
+</head>
+
+<body class="bg-melora-page text-melora-primary selection:bg-melora-rose/40 selection:text-melora-primary">
+
+  <!-- Toast Notification Stack -->
+  <div id="toast-stack" aria-live="polite" class="fixed bottom-5 right-5 z-[110] flex flex-col gap-2.5 pointer-events-none max-w-sm w-full px-4 sm:px-0"></div>
+
+  <!-- ==================== 1. TOP NAVIGATION & UTILITY BAR ==================== -->
+  <header class="sticky top-0 z-40 bg-melora-page/90 backdrop-blur-md border-b border-melora-border/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 h-20 sm:h-22 flex items-center justify-between gap-4">
+
+      <!-- Bespoke MÉLORA Luxury Pâtisserie Brand Crest & Wordmark -->
+      <a href="#top" class="flex items-center group rounded-xl py-1 px-1.5 transition-transform duration-300 hover:scale-[1.01]" aria-label="MÉLORA Pâtisserie & Desserts Home">
+        <svg class="h-12 sm:h-14 w-auto text-[#3B1E12]" viewBox="0 0 460 156" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <!-- Symmetrical 4-Petal Filigree Crest & 4-Point Diamond Star -->
+          <g fill="currentColor">
+            <!-- Top 4-Point Star -->
+            <path d="M230 2C231.6 8.2 233.8 10.4 240 12C233.8 13.6 231.6 15.8 230 22C228.4 15.8 226.2 13.6 220 12C226.2 10.4 228.4 8.2 230 2Z"/>
+            <!-- Left Inner Heart-Petal Loop -->
+            <path d="M228.2 61C227.5 47 222.5 34 214.2 27.5C207.8 22.5 199.5 24.5 198 31.8C196.6 38.6 202.2 44.5 210.8 48.2C218.5 51.5 224.8 55.6 228.2 61ZM225.4 53.6C220.4 49.4 214.2 46.2 208.8 43.6C203.2 40.9 200.6 36.8 201.6 32.5C202.6 28.2 207.8 27.2 212.4 30.8C218.6 35.6 223.2 44.2 225.4 53.6Z"/>
+            <!-- Right Inner Heart-Petal Loop -->
+            <path d="M231.8 61C232.5 47 237.5 34 245.8 27.5C252.2 22.5 260.5 24.5 262 31.8C263.4 38.6 257.8 44.5 249.2 48.2C241.5 51.5 235.2 55.6 231.8 61ZM234.6 53.6C239.6 49.4 245.8 46.2 251.2 43.6C256.8 40.9 259.4 36.8 258.4 32.5C257.4 28.2 252.2 27.2 247.6 30.8C241.4 35.6 236.8 44.2 234.6 53.6Z"/>
+            <!-- Left Outer Wing Scroll -->
+            <path d="M226.4 63.5C221.2 53.2 210.5 45.2 197.5 42.6C186.2 40.3 177.2 46.2 178.4 54.6C179.4 61.5 186.8 64.8 195.8 63.4C206.4 61.8 217.5 61.2 226.4 63.5ZM218.2 59.8C210.2 58.6 201.6 59.1 194.2 60.1C187.8 61 182.8 58.8 182.2 54.1C181.5 48.8 187.8 44.8 196.4 46.5C206.5 48.5 214.2 53.6 218.2 59.8Z"/>
+            <!-- Right Outer Wing Scroll -->
+            <path d="M233.6 63.5C238.8 53.2 249.5 45.2 262.5 42.6C273.8 40.3 282.8 46.2 281.6 54.6C280.6 61.5 273.2 64.8 264.2 63.4C253.6 61.8 242.5 61.2 233.6 63.5ZM241.8 59.8C249.8 58.6 258.4 59.1 265.8 60.1C272.2 61 277.2 58.8 277.8 54.1C278.5 48.8 272.2 44.8 263.6 46.5C253.5 48.5 245.8 53.6 241.8 59.8Z"/>
+          </g>
+
+          <!-- High-Contrast Editorial Serif Wordmark: MÉLORA with Swash R -->
+          <g fill="currentColor">
+            <!-- M -->
+            <path d="M40 123V121.2C45.2 120.8 46.8 119.2 47.2 112.4L49.4 79.6C49.8 73.2 48.2 71.4 42.4 71V69.2H57.6L76.4 108.8L95.2 69.2H110.2V71C104.6 71.4 103.2 73.2 103.6 79.6L105.8 112.4C106.2 119.2 107.8 120.8 113 121.2V123H91.6V121.2C96.8 120.8 98.2 119.2 97.8 112.4L96.1 81.4L76.6 122.4H74.4L54.8 81.2L53.1 112.4C52.7 119.2 54.2 120.8 59.6 121.2V123H40Z"/>
+            <!-- É (with tapered acute accent) -->
+            <path d="M148.6 64.5L158.8 55.2L163.2 58.4L150.6 66.2L148.6 64.5ZM123.5 123V121.2C128.8 120.8 130.2 119.2 130.2 112.6V79.6C130.2 73 128.8 71.4 123.5 71V69.2H165.4L166.2 80.4H164.2C162.8 74.2 160.4 72.2 152.6 72.2H138.6V93.8H150.8C156.8 93.8 158.6 92.2 159.6 87.2H161.4V103.6H159.6C158.6 98.4 156.8 96.8 150.8 96.8H138.6V113.4C138.6 118.8 140.4 120 147.8 120H154.6C162.2 120 165.4 117.4 167.8 110.4H169.8L167.6 123H123.5Z"/>
+            <!-- L -->
+            <path d="M178.4 123V121.2C183.8 120.8 185.2 119.2 185.2 112.6V79.6C185.2 73 183.8 71.4 178.4 71V69.2H200.4V71C195 71.4 193.6 73 193.6 79.6V113.4C193.6 118.8 195.2 120 202.4 120H208.2C215.8 120 218.8 117.4 221.2 110.2H223.2L221 123H178.4Z"/>
+            <!-- O -->
+            <path d="M259.6 124.2C241.8 124.2 229.2 112.2 229.2 96.1C229.2 79.8 242.2 68 260.2 68C278.2 68 290.8 79.8 290.8 96.1C290.8 112.4 277.8 124.2 259.6 124.2ZM260.2 121.2C272.6 121.2 281.2 111.2 281.2 96.1C281.2 80.8 272.4 71 259.8 71C247.4 71 238.8 80.8 238.8 96.1C238.8 111.2 247.6 121.2 260.2 121.2Z"/>
+            <!-- R with Sweeping Calligraphy Tail extending under A -->
+            <path d="M300.6 123V121.2C306 120.8 307.4 119.2 307.4 112.6V79.6C307.4 73 306 71.4 300.6 71V69.2H324.6C338.8 69.2 347.2 74.8 347.2 84.4C347.2 92.4 341.2 97.6 331.4 99.4C335.4 103.6 341.8 111.6 349.4 119.8C359.8 130.8 372.4 134.8 386.6 129.4L387.4 131C372.2 138.8 355.6 136.4 342.4 123.6C334.6 116 327.6 106.6 322.2 100.2H315.8V112.6C315.8 119.2 317.2 120.8 322.6 121.2V123H300.6ZM315.8 97.2H322.8C332.8 97.2 338.2 92.4 338.2 84.6C338.2 76.6 332.8 72.2 322.6 72.2H315.8V97.2Z"/>
+            <!-- A -->
+            <path d="M359.2 123V121.2C363.8 120.6 365.8 118.6 368.6 111.6L385.8 68.4H388.4L406.4 112.2C409.2 119 411.2 120.8 415.8 121.2V123H395.2V121.2C399.8 120.8 400.8 119.2 399 114.6L395.2 105H374.6L371 114.4C369.2 119.2 370.4 120.8 375.2 121.2V123H359.2ZM375.8 101.8H394L384.8 78.6L375.8 101.8Z"/>
+          </g>
+
+          <!-- Subtitle & Flanking Tapered Horizontal Rules -->
+          <g fill="currentColor">
+            <!-- Left Tapered Line -->
+            <polygon points="48,143.5 96,142.8 96,144.2"/>
+            <!-- Right Tapered Line -->
+            <polygon points="412,143.5 364,142.8 364,144.2"/>
+            <text x="230" y="147.5" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="13.5" font-weight="500" letter-spacing="5.8">
+              PÂTISSERIE &amp; DESSERTS
+            </text>
+          </g>
+        </svg>
+      </a>
+
+      <!-- Center Desktop Navigation -->
+      <nav aria-label="Primary Navigation" class="hidden lg:flex items-center gap-7 text-[13.5px] font-medium text-melora-primary/90">
+        <div class="relative group">
+          <button type="button" onclick="scrollToElement('signature-delights')" class="flex items-center gap-1.5 py-2 hover:text-melora-warm transition-colors">
+            <span>Collections</span>
+            <svg class="w-3.5 h-3.5 text-melora-muted transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          <!-- Editorial Collections Dropdown -->
+          <div class="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            <div class="w-64 bg-white/95 backdrop-blur-md rounded-2xl shadow-editorial border border-melora-border p-2.5 flex flex-col gap-1">
+              <button type="button" onclick="filterAndScroll('Patisserie')" class="text-left px-3.5 py-2.5 rounded-xl hover:bg-melora-blush/80 text-xs font-medium text-melora-primary flex items-center justify-between">
+                <span>Patisserie — Artisanal Creations</span><span class="text-melora-gold">→</span>
+              </button>
+              <button type="button" onclick="filterAndScroll('Viennoiserie')" class="text-left px-3.5 py-2.5 rounded-xl hover:bg-melora-blush/80 text-xs font-medium text-melora-primary flex items-center justify-between">
+                <span>Viennoiserie — Classic Bakes</span><span class="text-melora-gold">→</span>
+              </button>
+              <button type="button" onclick="filterAndScroll('Chocolaterie')" class="text-left px-3.5 py-2.5 rounded-xl hover:bg-melora-blush/80 text-xs font-medium text-melora-primary flex items-center justify-between">
+                <span>Chocolaterie — Chocolate Bliss</span><span class="text-melora-gold">→</span>
+              </button>
+              <button type="button" onclick="filterAndScroll('Macaron House')" class="text-left px-3.5 py-2.5 rounded-xl hover:bg-melora-blush/80 text-xs font-medium text-melora-primary flex items-center justify-between">
+                <span>Macaron House — Indulgence</span><span class="text-melora-gold">→</span>
+              </button>
+              <button type="button" onclick="filterAndScroll('Pistachio Atelier')" class="text-left px-3.5 py-2.5 rounded-xl hover:bg-melora-blush/80 text-xs font-medium text-melora-primary flex items-center justify-between">
+                <span>Pistachio Atelier — Rose &amp; Nut</span><span class="text-melora-gold">→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <a href="#our-story" class="py-2 hover:text-melora-warm transition-colors">Our Story</a>
+        <a href="#journal-section" class="py-2 hover:text-melora-warm transition-colors">Journal</a>
+        <a href="#gifting-section" class="py-2 hover:text-melora-warm transition-colors">Gifting</a>
+        <button type="button" onclick="openLocationsModal()" class="py-2 hover:text-melora-warm transition-colors">Locations</button>
+      </nav>
+
+      <!-- Right Utility Bar -->
+      <div class="flex items-center gap-1 sm:gap-2">
+        <!-- Live Search Modal Trigger -->
+        <button type="button" onclick="openSearchModal()" aria-label="Search desserts" class="p-2.5 rounded-full text-melora-primary hover:bg-melora-blush/80 transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+            <circle cx="11" cy="11" r="7"/>
+            <path stroke-linecap="round" d="M20 20l-3.5-3.5"/>
+          </svg>
+        </button>
+
+        <!-- Account / Member Modal -->
+        <button type="button" onclick="openAccountModal()" aria-label="Member account" class="hidden sm:flex p-2.5 rounded-full text-melora-primary hover:bg-melora-blush/80 transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+          </svg>
+        </button>
+
+        <!-- Wishlist Drawer Trigger with Live Badge -->
+        <button type="button" onclick="openWishlistDrawer()" aria-label="Open saved wishlist" class="relative p-2.5 rounded-full text-melora-primary hover:bg-melora-blush/80 transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+          </svg>
+          <span id="wishlist-badge" class="hidden absolute top-1 right-1 min-w-[17px] h-[17px] px-1 rounded-full bg-melora-roseDeep text-white text-[10px] font-bold flex items-center justify-center">0</span>
+        </button>
+
+        <!-- Shopping Bag Slide-Over Trigger with Live Badge -->
+        <button type="button" onclick="openCartDrawer()" aria-label="Open shopping bag" class="relative p-2.5 rounded-full text-melora-primary hover:bg-melora-blush/80 transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+          </svg>
+          <span id="cart-badge" class="absolute top-1 right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-melora-cocoaDark text-melora-page text-[10px] font-bold flex items-center justify-center shadow-sm">2</span>
+        </button>
+
+        <!-- Mobile Hamburger Menu Toggle -->
+        <button type="button" id="mobile-menu-trigger" onclick="openMobileMenu()" aria-label="Open mobile navigation menu" aria-expanded="false" class="lg:hidden p-2.5 rounded-full text-melora-primary hover:bg-melora-blush/80 transition-colors">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h11"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ==================== 2. HERO SECTION ("THE ART OF DESSERTS") ==================== -->
+    <section class="relative hero-silk-bg overflow-hidden border-b border-melora-border/60">
+      <!-- Floating Rose Petal SVG Accents -->
+      <svg class="hidden md:block absolute top-14 left-[43%] w-7 h-7 text-melora-rose/75 animate-petal pointer-events-none" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+        <path d="M16 3C11 9 6 15 9 22C12 28 21 28 24 21C27 14 21 8 16 3Z"/>
+      </svg>
+      <svg class="hidden md:block absolute bottom-16 left-[31%] w-6 h-6 text-melora-roseDeep/45 animate-petal-alt pointer-events-none" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+        <path d="M6 16C11 10 19 8 25 12C29 15 26 23 19 25C12 27 8 21 6 16Z"/>
+      </svg>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-10 sm:py-14 lg:py-20">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+
+          <!-- Left Editorial Column -->
+          <div class="lg:col-span-5 flex flex-col items-start text-left z-10">
+            <span id="hero-eyebrow" class="text-[11px] sm:text-xs font-semibold tracking-[0.25em] uppercase text-melora-warm mb-3">
+              THE ART OF DESSERTS
+            </span>
+            <h1 id="hero-headline" class="font-editorial text-4xl sm:text-5xl lg:text-[62px] font-medium text-melora-primary leading-[1.06] tracking-tight mb-4">
+              A Little Magic,<br/>In Every Bite.
+            </h1>
+            <p id="hero-subcopy" class="text-sm sm:text-base text-melora-muted leading-relaxed max-w-md mb-8">
+              Artisan desserts, crafted to delight. Crisp caramelized puff pastry layered with Madagascar vanilla bean Chantilly and orchard-fresh strawberries.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-3.5 mb-10">
+              <button type="button" onclick="scrollToElement('signature-delights')" class="inline-flex items-center gap-2.5 bg-melora-cocoaDark hover:bg-melora-cocoaMid text-melora-page text-xs sm:text-sm font-medium px-7 py-3.5 rounded-full shadow-editorial transition-all duration-300 hover:-translate-y-0.5">
+                <span>Explore the Collection</span>
+                <span aria-hidden="true">→</span>
+              </button>
+              <button type="button" onclick="openHeroFeaturedProduct()" class="inline-flex items-center gap-2 bg-white/85 hover:bg-white text-melora-primary border border-melora-border text-xs sm:text-sm font-medium px-5 py-3.5 rounded-full transition-all">
+                <span>Customize This Creation</span>
+              </button>
+            </div>
+
+            <!-- Hero Slide Pagination (01 / 04 + Prev / Next Controls) -->
+            <div class="flex items-center gap-4 pt-1">
+              <span id="hero-pagination-text" class="text-xs font-semibold tracking-[0.2em] text-melora-primary">01 / 04</span>
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="stepHeroSlide(-1)" aria-label="Previous featured slide" class="w-9 h-9 rounded-full border border-melora-primary/25 hover:border-melora-cocoaDark hover:bg-melora-cocoaDark hover:text-white flex items-center justify-center text-melora-primary transition-colors">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                  </svg>
+                </button>
+                <button type="button" onclick="stepHeroSlide(1)" aria-label="Next featured slide" class="w-9 h-9 rounded-full border border-melora-primary/25 hover:border-melora-cocoaDark hover:bg-melora-cocoaDark hover:text-white flex items-center justify-center text-melora-primary transition-colors">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="hidden sm:flex items-center gap-1.5 ml-2" role="tablist" aria-label="Hero showcase selector">
+                <button type="button" onclick="setHeroSlide(0)" class="hero-indicator w-6 h-1.5 rounded-full bg-melora-cocoaDark transition-all" aria-label="Showcase 1"></button>
+                <button type="button" onclick="setHeroSlide(1)" class="hero-indicator w-2 h-1.5 rounded-full bg-melora-cocoaDark/25 transition-all" aria-label="Showcase 2"></button>
+                <button type="button" onclick="setHeroSlide(2)" class="hero-indicator w-2 h-1.5 rounded-full bg-melora-cocoaDark/25 transition-all" aria-label="Showcase 3"></button>
+                <button type="button" onclick="setHeroSlide(3)" class="hero-indicator w-2 h-1.5 rounded-full bg-melora-cocoaDark/25 transition-all" aria-label="Showcase 4"></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Editorial Split Showcase -->
+          <div class="lg:col-span-7 relative">
+            <div class="relative mx-auto max-w-xl lg:max-w-none">
+              <!-- Silk Ribbon Glow Backdrop -->
+              <div class="absolute -inset-4 sm:-inset-6 rounded-[2.5rem] bg-gradient-to-tr from-melora-peach/80 via-white/70 to-melora-rose/35 blur-xl -z-10"></div>
+
+              <div class="relative rounded-[2.25rem] overflow-hidden bg-melora-blush border border-white/80 shadow-editorial aspect-[4/3] sm:aspect-[16/11] group">
+                <img id="hero-showcase-img"
+                     src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=1400&q=85"
+                     onerror="this.src='https://placehold.co/900x650/F5E4D8/2B1B14?text=MELORA+Strawberry+Mille-Feuille'"
+                     alt="Layered strawberry Chantilly mille-feuille dessert on marble pedestal"
+                     class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
+
+                <!-- Warm Silk Vignette -->
+                <div class="absolute inset-0 bg-gradient-to-t from-melora-cocoaDark/50 via-transparent to-transparent"></div>
+
+                <!-- Floating Atelier Tasting Card -->
+                <div class="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-auto sm:max-w-xs bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-card border border-melora-border flex items-center justify-between gap-4">
+                  <div>
+                    <span id="hero-badge-label" class="text-[10px] font-semibold uppercase tracking-[0.2em] text-melora-warm block">Patisserie Signature</span>
+                    <h2 id="hero-dish-title" class="font-editorial text-lg font-semibold text-melora-primary leading-tight">Strawberry Chantilly Mille-Feuille</h2>
+                    <p id="hero-dish-price" class="text-xs font-semibold text-melora-muted mt-0.5">₹1,250 · Crafted Fresh Daily</p>
+                  </div>
+                  <button type="button" onclick="openHeroFeaturedProduct()" aria-label="Customize featured creation" class="shrink-0 w-10 h-10 rounded-full bg-melora-cocoaDark text-white hover:bg-melora-warm flex items-center justify-center transition-colors">
+                    <span aria-hidden="true">→</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 3. SIGNATURE DELIGHTS (5-CARD CATEGORY SELECTOR & INTERACTIVE MENU) ==================== -->
+    <section id="signature-delights" class="py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+
+      <!-- Editorial Section Heading with Hairline Dividers -->
+      <div class="flex items-center justify-center gap-4 sm:gap-6 mb-10 sm:mb-12">
+        <span class="h-px w-12 sm:w-24 bg-melora-border"></span>
+        <h2 class="font-editorial text-3xl sm:text-4xl font-medium text-melora-primary text-center">
+          Signature Delights
+        </h2>
+        <span class="h-px w-12 sm:w-24 bg-melora-border"></span>
+      </div>
+
+      <!-- 5 Arched / Rounded Category Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-5 mb-14" role="tablist" aria-label="Dessert Atelier Categories">
+
+        <!-- 1. Patisserie -->
+        <button type="button" role="tab" aria-pressed="false" aria-selected="false" data-category-card="Patisserie" onclick="selectCategory('Patisserie')"
+          class="cat-card group text-left bg-melora-blush/80 hover:bg-melora-blush rounded-[1.75rem] p-3 sm:p-4 border border-melora-border transition-all duration-300 hover:-translate-y-1 hover:shadow-card flex flex-col justify-between">
+          <div class="rounded-t-[1.35rem] rounded-b-xl overflow-hidden aspect-[4/3] mb-3.5 bg-white">
+            <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80"
+                 onerror="this.src='https://placehold.co/400x300/F5E4D8/2B1B14?text=Patisserie'"
+                 alt="Patisserie strawberry cream tartlet"
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          </div>
+          <div class="flex items-end justify-between gap-2 px-1">
+            <div>
+              <h3 class="font-editorial text-lg sm:text-xl font-semibold text-melora-primary leading-tight">Patisserie</h3>
+              <p class="text-[11px] sm:text-xs text-melora-muted mt-0.5">Artisanal Creations</p>
+            </div>
+            <span class="cat-arrow w-7 h-7 rounded-full border border-melora-primary/20 group-hover:bg-melora-cocoaDark group-hover:text-white flex items-center justify-center text-xs text-melora-primary transition-colors shrink-0">→</span>
+          </div>
+        </button>
+
+        <!-- 2. Viennoiserie -->
+        <button type="button" role="tab" aria-pressed="false" aria-selected="false" data-category-card="Viennoiserie" onclick="selectCategory('Viennoiserie')"
+          class="cat-card group text-left bg-melora-blush/80 hover:bg-melora-blush rounded-[1.75rem] p-3 sm:p-4 border border-melora-border transition-all duration-300 hover:-translate-y-1 hover:shadow-card flex flex-col justify-between">
+          <div class="rounded-t-[1.35rem] rounded-b-xl overflow-hidden aspect-[4/3] mb-3.5 bg-white">
+            <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=600&q=80"
+                 onerror="this.src='https://placehold.co/400x300/F5E4D8/2B1B14?text=Viennoiserie'"
+                 alt="Golden flaky French butter croissant"
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          </div>
+          <div class="flex items-end justify-between gap-2 px-1">
+            <div>
+              <h3 class="font-editorial text-lg sm:text-xl font-semibold text-melora-primary leading-tight">Viennoiserie</h3>
+              <p class="text-[11px] sm:text-xs text-melora-muted mt-0.5">Classic Bakes</p>
+            </div>
+            <span class="cat-arrow w-7 h-7 rounded-full border border-melora-primary/20 group-hover:bg-melora-cocoaDark group-hover:text-white flex items-center justify-center text-xs text-melora-primary transition-colors shrink-0">→</span>
+          </div>
+        </button>
+
+        <!-- 3. Chocolaterie -->
+        <button type="button" role="tab" aria-pressed="false" aria-selected="false" data-category-card="Chocolaterie" onclick="selectCategory('Chocolaterie')"
+          class="cat-card group text-left bg-melora-blush/80 hover:bg-melora-blush rounded-[1.75rem] p-3 sm:p-4 border border-melora-border transition-all duration-300 hover:-translate-y-1 hover:shadow-card flex flex-col justify-between">
+          <div class="rounded-t-[1.35rem] rounded-b-xl overflow-hidden aspect-[4/3] mb-3.5 bg-white">
+            <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80"
+                 onerror="this.src='https://placehold.co/400x300/F5E4D8/2B1B14?text=Chocolaterie'"
+                 alt="Single-origin Belgian chocolate ganache cake"
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          </div>
+          <div class="flex items-end justify-between gap-2 px-1">
+            <div>
+              <h3 class="font-editorial text-lg sm:text-xl font-semibold text-melora-primary leading-tight">Chocolaterie</h3>
+              <p class="text-[11px] sm:text-xs text-melora-muted mt-0.5">Pure Chocolate Bliss</p>
+            </div>
+            <span class="cat-arrow w-7 h-7 rounded-full border border-melora-primary/20 group-hover:bg-melora-cocoaDark group-hover:text-white flex items-center justify-center text-xs text-melora-primary transition-colors shrink-0">→</span>
+          </div>
+        </button>
+
+        <!-- 4. Macaron House -->
+        <button type="button" role="tab" aria-pressed="false" aria-selected="false" data-category-card="Macaron House" onclick="selectCategory('Macaron House')"
+          class="cat-card group text-left bg-melora-blush/80 hover:bg-melora-blush rounded-[1.75rem] p-3 sm:p-4 border border-melora-border transition-all duration-300 hover:-translate-y-1 hover:shadow-card flex flex-col justify-between">
+          <div class="rounded-t-[1.35rem] rounded-b-xl overflow-hidden aspect-[4/3] mb-3.5 bg-white">
+            <img src="https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&w=600&q=80"
+                 onerror="this.src='https://placehold.co/400x300/F5E4D8/2B1B14?text=Macaron+House'"
+                 alt="Rose and raspberry Parisian macarons"
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          </div>
+          <div class="flex items-end justify-between gap-2 px-1">
+            <div>
+              <h3 class="font-editorial text-lg sm:text-xl font-semibold text-melora-primary leading-tight">Macaron House</h3>
+              <p class="text-[11px] sm:text-xs text-melora-muted mt-0.5">Delicate Indulgence</p>
+            </div>
+            <span class="cat-arrow w-7 h-7 rounded-full border border-melora-primary/20 group-hover:bg-melora-cocoaDark group-hover:text-white flex items-center justify-center text-xs text-melora-primary transition-colors shrink-0">→</span>
+          </div>
+        </button>
+
+        <!-- 5. Pistachio Atelier -->
+        <button type="button" role="tab" aria-pressed="false" aria-selected="false" data-category-card="Pistachio Atelier" onclick="selectCategory('Pistachio Atelier')"
+          class="cat-card col-span-2 sm:col-span-1 group text-left bg-melora-blush/80 hover:bg-melora-blush rounded-[1.75rem] p-3 sm:p-4 border border-melora-border transition-all duration-300 hover:-translate-y-1 hover:shadow-card flex flex-col justify-between">
+          <div class="rounded-t-[1.35rem] rounded-b-xl overflow-hidden aspect-[4/3] mb-3.5 bg-white">
+            <img src="https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=600&q=80"
+                 onerror="this.src='https://placehold.co/400x300/F5E4D8/2B1B14?text=Pistachio+Atelier'"
+                 alt="Iranian pistachio and rose cream tart"
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          </div>
+          <div class="flex items-end justify-between gap-2 px-1">
+            <div>
+              <h3 class="font-editorial text-lg sm:text-xl font-semibold text-melora-primary leading-tight">Pistachio Atelier</h3>
+              <p class="text-[11px] sm:text-xs text-melora-muted mt-0.5">Rose &amp; Pistachio Delight</p>
+            </div>
+            <span class="cat-arrow w-7 h-7 rounded-full border border-melora-primary/20 group-hover:bg-melora-cocoaDark group-hover:text-white flex items-center justify-center text-xs text-melora-primary transition-colors shrink-0">→</span>
+          </div>
+        </button>
+
+      </div>
+
+      <!-- Interactive Dessert Collection Menu & Carousel Controls -->
+      <div id="collection-menu-panel" class="bg-melora-cream/90 rounded-[2rem] border border-melora-border p-5 sm:p-8 shadow-card">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-melora-border">
+          <div>
+            <span class="text-[11px] font-semibold uppercase tracking-[0.24em] text-melora-warm">Curated Atelier Showcase</span>
+            <h3 id="menu-heading" class="font-editorial text-2xl sm:text-3xl font-semibold text-melora-primary mt-0.5">
+              All Handcrafted Desserts
+            </h3>
+          </div>
+
+          <div class="flex items-center gap-2.5">
+            <!-- Scrollable Category Pills -->
+            <div id="category-pills-row" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1" role="group" aria-label="Filter desserts">
+              <button type="button" data-pill="All" onclick="selectCategory('All')" class="filter-pill shrink-0 px-4 py-2 rounded-full text-xs font-semibold bg-melora-cocoaDark text-white transition-all">
+                All Desserts
+              </button>
+              <button type="button" data-pill="Patisserie" onclick="selectCategory('Patisserie')" class="filter-pill shrink-0 px-4 py-2 rounded-full text-xs font-medium bg-white/85 text-melora-primary hover:bg-melora-blush border border-melora-border transition-all">
+                Patisserie
+              </button>
+              <button type="button" data-pill="Viennoiserie" onclick="selectCategory('Viennoiserie')" class="filter-pill shrink-0 px-4 py-2 rounded-full text-xs font-medium bg-white/85 text-melora-primary hover:bg-melora-blush border border-melora-border transition-all">
+                Viennoiserie
+              </button>
+              <button type="button" data-pill="Chocolaterie" onclick="selectCategory('Chocolaterie')" class="filter-pill shrink-0 px-4 py-2 rounded-full text-xs font-medium bg-white/85 text-melora-primary hover:bg-melora-blush border border-melora-border transition-all">
+                Chocolaterie
+              </button>
+              <button type="button" data-pill="Macaron House" onclick="selectCategory('Macaron House')" class="filter-pill shrink-0 px-4 py-2 rounded-full text-xs font-medium bg-white/85 text-melora-primary hover:bg-melora-blush border border-melora-border transition-all">
+                Macaron House
+              </button>
+              <button type="button" data-pill="Pistachio Atelier" onclick="selectCategory('Pistachio Atelier')" class="filter-pill shrink-0 px-4 py-2 rounded-full text-xs font-medium bg-white/85 text-melora-primary hover:bg-melora-blush border border-melora-border transition-all">
+                Pistachio Atelier
+              </button>
+              <button type="button" data-pill="Seasonal" onclick="selectCategory('Seasonal')" class="filter-pill shrink-0 px-4 py-2 rounded-full text-xs font-medium bg-white/85 text-melora-primary hover:bg-melora-blush border border-melora-border transition-all">
+                Seasonal Specials
+              </button>
+            </div>
+
+            <!-- Horizontal Carousel Arrows -->
+            <div class="hidden sm:flex items-center gap-1.5 shrink-0 pl-2 border-l border-melora-border">
+              <button type="button" onclick="scrollProductStrip(-1)" aria-label="Scroll products left" class="w-8 h-8 rounded-full border border-melora-border bg-white hover:bg-melora-cocoaDark hover:text-white flex items-center justify-center text-xs transition-colors">←</button>
+              <button type="button" onclick="scrollProductStrip(1)" aria-label="Scroll products right" class="w-8 h-8 rounded-full border border-melora-border bg-white hover:bg-melora-cocoaDark hover:text-white flex items-center justify-center text-xs transition-colors">→</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Cards Grid -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 pt-7">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 4. OUR STORY SECTION ("THE ART OF MAKING SWEET MOMENTS") ==================== -->
+    <section id="our-story" class="py-12 sm:py-18 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+
+        <!-- Left Pastry Chef Portrait -->
+        <div class="lg:col-span-5">
+          <div class="relative rounded-[2rem] overflow-hidden shadow-editorial border border-melora-border aspect-[4/3] bg-melora-blush group">
+            <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1000&q=85"
+                 onerror="this.src='https://placehold.co/800x600/F5E4D8/2B1B14?text=Artisanal+Pastry+Craft'"
+                 alt="Master pastry chef finishing an artisanal pistachio-rose tart"
+                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <div class="absolute bottom-4 left-4 bg-white/92 backdrop-blur-md px-4 py-2 rounded-full text-[11px] font-medium text-melora-primary shadow-sm border border-melora-border/70">
+              Hand-finished daily in small atelier batches
+            </div>
+          </div>
+        </div>
+
+        <!-- Center Story Narrative -->
+        <div class="lg:col-span-4 flex flex-col items-start">
+          <span class="text-[11px] font-semibold tracking-[0.25em] uppercase text-melora-warm mb-2.5">
+            OUR STORY
+          </span>
+          <h2 class="font-editorial text-3xl sm:text-4xl lg:text-[42px] font-medium text-melora-primary leading-[1.1] mb-4">
+            The Art of Making Sweet Moments
+          </h2>
+          <p class="text-sm text-melora-muted leading-relaxed mb-6">
+            From our kitchen to your table, we craft desserts with passion, precision and love—uniting classical French pâtisserie technique with Iranian pistachios, Damask rosewater, and single-origin couverture chocolate.
+          </p>
+          <button type="button" onclick="openStoryModal()" class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-melora-primary/30 hover:border-melora-cocoaDark hover:bg-melora-cocoaDark hover:text-white text-xs sm:text-sm font-medium text-melora-primary transition-all">
+            <span>Discover Our Story</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <!-- Right 3 Craftsmanship Pillars -->
+        <div class="lg:col-span-3 flex flex-col gap-6 lg:border-l lg:border-melora-border lg:pl-7">
+
+          <!-- Pillar 1: Premium Ingredients -->
+          <div class="flex items-start gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-melora-blush border border-melora-border flex items-center justify-center shrink-0 text-melora-warm">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 3h12l4 6-10 12L2 9l4-6z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2 9h20M12 21L8 9l4-6 4 6-4 12z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-editorial text-lg font-semibold text-melora-primary leading-snug">Premium Ingredients</h3>
+              <p class="text-xs text-melora-muted mt-0.5">Only the finest ingredients</p>
+            </div>
+          </div>
+
+          <!-- Pillar 2: Artisanal Craftsmanship -->
+          <div class="flex items-start gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-melora-blush border border-melora-border flex items-center justify-center shrink-0 text-melora-warm">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.87A4 4 0 017.41 6a5.11 5.11 0 011.05-1.54 5 5 0 017.08 0A5.11 5.11 0 0116.59 6 4 4 0 0118 13.87V20H6v-6.13z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 17h12"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-editorial text-lg font-semibold text-melora-primary leading-snug">Artisanal Craftsmanship</h3>
+              <p class="text-xs text-melora-muted mt-0.5">Handcrafted with care</p>
+            </div>
+          </div>
+
+          <!-- Pillar 3: A Taste of Happiness -->
+          <div class="flex items-start gap-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-melora-blush border border-melora-border flex items-center justify-center shrink-0 text-melora-warm">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-editorial text-lg font-semibold text-melora-primary leading-snug">A Taste of Happiness</h3>
+              <p class="text-xs text-melora-muted mt-0.5">In every bite</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 5. DARK COCOA FEATURE BANNER ("THE MÉLORA EXPERIENCE") ==================== -->
+    <section class="py-8 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+      <div class="relative rounded-[2.25rem] overflow-hidden cocoa-experience-bg shadow-cocoa text-melora-page">
+        <div class="grid grid-cols-1 lg:grid-cols-12 items-center">
+
+          <!-- Left Editorial Copy -->
+          <div class="lg:col-span-5 p-8 sm:p-12 lg:p-14 z-10">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="text-[11px] font-semibold tracking-[0.25em] uppercase text-melora-gold">
+                THE MÉLORA EXPERIENCE
+              </span>
+              <span class="h-px w-10 bg-melora-gold/45"></span>
+            </div>
+            <h2 class="font-editorial text-3xl sm:text-4xl lg:text-[44px] font-medium text-white leading-[1.1] mb-4">
+              Experience the Magic of Dessert
+            </h2>
+            <p class="text-sm text-melora-blush/90 leading-relaxed mb-8 max-w-sm">
+              Watch our signature desserts come to life with a touch of motion—featuring our 72% Single-Origin Molten Chocolate Dome crowned with 24K edible gold leaf.
+            </p>
+            <button type="button" onclick="openExperienceModal()" class="inline-flex items-center gap-2.5 px-6 py-3 rounded-full border border-melora-gold/60 bg-white/10 hover:bg-white hover:text-melora-cocoaDark text-xs sm:text-sm font-medium text-white backdrop-blur-sm transition-all duration-300">
+              <span>Explore the Experience</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+          <!-- Right Molten Chocolate Ganache Visual -->
+          <div class="lg:col-span-7 relative h-72 sm:h-96 lg:h-[400px] overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=85"
+                 onerror="this.src='https://placehold.co/900x500/2C1A12/FAF0E8?text=Molten+Chocolate+Dome'"
+                 alt="Molten dark chocolate ganache dome with gold leaf and cocoa chunks"
+                 class="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-105" />
+            <div class="hidden lg:block absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-[#3D2418] to-transparent"></div>
+            <div class="lg:hidden absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#3D2418] to-transparent"></div>
+
+            <!-- Interactive Play / Tasting Trigger -->
+            <button type="button" onclick="openExperienceModal()" aria-label="Open Signature Molten Chocolate Dome Tasting"
+              class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-white/20 hover:bg-white/35 backdrop-blur-md border border-white/65 flex items-center justify-center text-white shadow-lg transition-transform hover:scale-110">
+              <svg class="w-6 h-6 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 6. TWO-COLUMN CURATED BANNERS ("SEASONAL SPECIALS" & "PREMIUM GIFTING") ==================== -->
+    <section id="gifting-section" class="py-10 sm:py-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+
+        <!-- Left Card: Seasonal Specials -->
+        <article class="seasonal-surface rounded-[2rem] border border-melora-border overflow-hidden shadow-card grid grid-cols-1 sm:grid-cols-12 items-center group">
+          <div class="sm:col-span-6 p-7 sm:p-9 flex flex-col items-start">
+            <div class="flex items-center gap-2.5 mb-2.5">
+              <span class="text-[10.5px] font-semibold tracking-[0.23em] uppercase text-melora-warm">SEASONAL SPECIALS</span>
+              <span class="h-px w-7 bg-melora-warm/45"></span>
+            </div>
+            <h3 class="font-editorial text-3xl font-medium text-melora-primary leading-tight mb-3">
+              A Taste of the Season
+            </h3>
+            <p class="text-xs sm:text-sm text-melora-muted leading-relaxed mb-6">
+              Limited-edition desserts for your sweetest moments—orchard berries, whipped mascarpone, and crisp sablé.
+            </p>
+            <button type="button" onclick="filterAndScroll('Seasonal')" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-melora-primary/30 bg-white/75 hover:bg-melora-cocoaDark hover:text-white text-xs font-medium text-melora-primary transition-all">
+              <span>Explore Specials</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+          <div class="sm:col-span-6 h-60 sm:h-full overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=800&q=85"
+                 onerror="this.src='https://placehold.co/500x450/F5E4D8/2B1B14?text=Seasonal+Berry+Tart'"
+                 alt="Seasonal mixed berry cream tartlet"
+                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          </div>
+        </article>
+
+        <!-- Right Card: Premium Gifting -->
+        <article class="gifting-surface rounded-[2rem] border border-melora-border overflow-hidden shadow-card grid grid-cols-1 sm:grid-cols-12 items-center group">
+          <div class="sm:col-span-6 p-7 sm:p-9 flex flex-col items-start">
+            <div class="flex items-center gap-2.5 mb-2.5">
+              <span class="text-[10.5px] font-semibold tracking-[0.23em] uppercase text-melora-warm">PREMIUM GIFTING</span>
+              <span class="h-px w-7 bg-melora-warm/45"></span>
+            </div>
+            <h3 class="font-editorial text-3xl font-medium text-melora-primary leading-tight mb-3">
+              A Sweet Gift, A Lasting Impression.
+            </h3>
+            <p class="text-xs sm:text-sm text-melora-muted leading-relaxed mb-6">
+              Elegant gift boxes for every occasion—curate your assortment, satin ribbon hue, and wax-sealed note.
+            </p>
+            <button type="button" onclick="openGiftBoxBuilder()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-melora-primary/30 bg-white/75 hover:bg-melora-cocoaDark hover:text-white text-xs font-medium text-melora-primary transition-all">
+              <span>Explore Gifting</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+          <div class="sm:col-span-6 h-60 sm:h-full overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=85"
+                 onerror="this.src='https://placehold.co/500x450/F0D2CA/2B1B14?text=MELORA+Gift+Box'"
+                 alt="Luxury satin-ribboned MÉLORA dessert gift box"
+                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ==================== 7. FROM OUR JOURNAL & CUSTOMER TESTIMONIAL SPLIT SECTION ==================== -->
+    <section id="journal-section" class="py-10 sm:py-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+      <div class="bg-melora-cream/90 rounded-[2rem] border border-melora-border p-6 sm:p-8 lg:p-10 shadow-card">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+
+          <!-- Left: From Our Journal -->
+          <div class="lg:col-span-3 flex flex-col items-start">
+            <span class="text-[10.5px] font-semibold tracking-[0.23em] uppercase text-melora-warm mb-2">
+              FROM OUR JOURNAL
+            </span>
+            <h2 class="font-editorial text-3xl font-medium text-melora-primary leading-tight mb-2">
+              Stay Sweet
+            </h2>
+            <p class="text-xs text-melora-muted leading-relaxed mb-5">
+              Discover recipes, dessert ideas and more from our pastry chefs.
+            </p>
+            <button type="button" onclick="openJournalModal(0)" class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-melora-primary/25 hover:bg-melora-cocoaDark hover:text-white text-xs font-medium text-melora-primary transition-all">
+              <span>Read More</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+          <!-- Center: 3 Clickable Journal Cards -->
+          <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+            <button type="button" onclick="openJournalModal(0)" class="group text-left rounded-2xl overflow-hidden bg-white border border-melora-border shadow-sm hover:shadow-md transition-all">
+              <div class="aspect-[4/3] overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1624353365286-3f8d62daad51?auto=format&fit=crop&w=500&q=80"
+                     onerror="this.src='https://placehold.co/400x300/F5E4D8/2B1B14?text=Molten+Berry+Fondant'"
+                     alt="Molten berry chocolate fondant"
+                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              </div>
+              <div class="p-3">
+                <span class="text-[9.5px] uppercase tracking-wider text-melora-warm font-semibold block">Recipe &amp; Plating</span>
+                <p class="font-editorial text-base font-semibold text-melora-primary leading-tight mt-0.5">Molten Berry Fondant</p>
+              </div>
+            </button>
+
+            <button type="button" onclick="openJournalModal(1)" class="group text-left rounded-2xl overflow-hidden bg-white border border-melora-border shadow-sm hover:shadow-md transition-all">
+              <div class="aspect-[4/3] overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=500&q=80"
+                     onerror="this.src='https://placehold.co/400x300/F5E4D8/2B1B14?text=Pavlova+Cloud+Craft'"
+                     alt="Crisp meringue pavlova cloud with berries"
+                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              </div>
+              <div class="p-3">
+                <span class="text-[9.5px] uppercase tracking-wider text-melora-warm font-semibold block">Meringue Mastery</span>
+                <p class="font-editorial text-base font-semibold text-melora-primary leading-tight mt-0.5">Pavlova Cloud Craft</p>
+              </div>
+            </button>
+
+            <button type="button" onclick="openJournalModal(2)" class="group text-left rounded-2xl overflow-hidden bg-white border border-melora-border shadow-sm hover:shadow-md transition-all">
+              <div class="aspect-[4/3] overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1612203985729-70726954388c?auto=format&fit=crop&w=500&q=80"
+                     onerror="this.src='https://placehold.co/400x300/F5E4D8/2B1B14?text=Classic+Chocolate+Eclair'"
+                     alt="Glazed dark chocolate éclair"
+                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              </div>
+              <div class="p-3">
+                <span class="text-[9.5px] uppercase tracking-wider text-melora-warm font-semibold block">French Classics</span>
+                <p class="font-editorial text-base font-semibold text-melora-primary leading-tight mt-0.5">Classic Chocolate Éclair</p>
+              </div>
+            </button>
+          </div>
+
+          <!-- Right: Customer Testimonial with Prev/Next Switcher -->
+          <div class="lg:col-span-3 lg:border-l lg:border-melora-border lg:pl-7 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2.5">
+                <span class="text-[10px] font-semibold tracking-[0.2em] uppercase text-melora-warm">OUR CUSTOMERS LOVE US</span>
+                <div class="flex items-center gap-1">
+                  <button type="button" onclick="stepTestimonial(-1)" aria-label="Previous customer review" class="w-6 h-6 rounded-full border border-melora-border hover:bg-melora-cocoaDark hover:text-white flex items-center justify-center text-[11px] transition-colors">‹</button>
+                  <button type="button" onclick="stepTestimonial(1)" aria-label="Next customer review" class="w-6 h-6 rounded-full border border-melora-border hover:bg-melora-cocoaDark hover:text-white flex items-center justify-center text-[11px] transition-colors">›</button>
+                </div>
+              </div>
+              <blockquote id="testimonial-quote" class="font-editorial italic text-lg sm:text-xl text-melora-primary leading-snug mb-4">
+                “Mélora turns every celebration into something truly special.”
+              </blockquote>
+            </div>
+            <div class="flex items-center gap-3">
+              <img id="testimonial-avatar"
+                   src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+                   onerror="this.src='https://placehold.co/80x80/E3A9AE/2B1B14?text=VM'"
+                   alt="Valentina Mandarina"
+                   class="w-10 h-10 rounded-full object-cover border border-melora-rose" />
+              <div>
+                <p id="testimonial-author" class="text-xs font-semibold text-melora-primary">— Valentina Mandarina</p>
+                <div class="flex items-center gap-0.5 text-melora-gold text-xs mt-0.5" aria-label="5 out of 5 stars">
+                  <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 8. INTERACTIVE FAQ ACCORDION ("EVERY SWEET QUESTION") ==================== -->
+    <section id="faq-section" class="py-10 sm:py-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-10">
+      <div class="text-center mb-10">
+        <span class="text-[11px] font-semibold tracking-[0.25em] uppercase text-melora-warm">THE MÉLORA PROMISE</span>
+        <h2 class="font-editorial text-3xl sm:text-4xl font-medium text-melora-primary mt-1.5">
+          Every Sweet Question
+        </h2>
+        <p class="text-xs sm:text-sm text-melora-muted mt-2 max-w-lg mx-auto">
+          Everything you need to know about our 100% eggless options, bespoke chocolate inscriptions, cold-chain delivery across India, and keepsake gift boxes.
+        </p>
+      </div>
+
+      <div id="faq-accordion" class="space-y-3.5">
+        <!-- Populated dynamically via JS -->
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== 9. EDITORIAL FOOTER & NEWSLETTER ==================== -->
+  <footer class="bg-melora-cream border-t border-melora-border pt-14 pb-10 mt-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-melora-border">
+
+        <!-- Brand Wordmark & Tagline -->
+        <div class="lg:col-span-4 flex flex-col items-start">
+          <a href="#top" class="inline-block mb-3.5 group" aria-label="MÉLORA Pâtisserie & Desserts">
+            <svg class="h-16 w-auto text-[#3B1E12] transition-transform duration-300 group-hover:scale-[1.01]" viewBox="0 0 460 156" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+              <g fill="currentColor">
+                <path d="M230 2C231.6 8.2 233.8 10.4 240 12C233.8 13.6 231.6 15.8 230 22C228.4 15.8 226.2 13.6 220 12C226.2 10.4 228.4 8.2 230 2Z"/>
+                <path d="M228.2 61C227.5 47 222.5 34 214.2 27.5C207.8 22.5 199.5 24.5 198 31.8C196.6 38.6 202.2 44.5 210.8 48.2C218.5 51.5 224.8 55.6 228.2 61ZM225.4 53.6C220.4 49.4 214.2 46.2 208.8 43.6C203.2 40.9 200.6 36.8 201.6 32.5C202.6 28.2 207.8 27.2 212.4 30.8C218.6 35.6 223.2 44.2 225.4 53.6Z"/>
+                <path d="M231.8 61C232.5 47 237.5 34 245.8 27.5C252.2 22.5 260.5 24.5 262 31.8C263.4 38.6 257.8 44.5 249.2 48.2C241.5 51.5 235.2 55.6 231.8 61ZM234.6 53.6C239.6 49.4 245.8 46.2 251.2 43.6C256.8 40.9 259.4 36.8 258.4 32.5C257.4 28.2 252.2 27.2 247.6 30.8C241.4 35.6 236.8 44.2 234.6 53.6Z"/>
+                <path d="M226.4 63.5C221.2 53.2 210.5 45.2 197.5 42.6C186.2 40.3 177.2 46.2 178.4 54.6C179.4 61.5 186.8 64.8 195.8 63.4C206.4 61.8 217.5 61.2 226.4 63.5ZM218.2 59.8C210.2 58.6 201.6 59.1 194.2 60.1C187.8 61 182.8 58.8 182.2 54.1C181.5 48.8 187.8 44.8 196.4 46.5C206.5 48.5 214.2 53.6 218.2 59.8Z"/>
+                <path d="M233.6 63.5C238.8 53.2 249.5 45.2 262.5 42.6C273.8 40.3 282.8 46.2 281.6 54.6C280.6 61.5 273.2 64.8 264.2 63.4C253.6 61.8 242.5 61.2 233.6 63.5ZM241.8 59.8C249.8 58.6 258.4 59.1 265.8 60.1C272.2 61 277.2 58.8 277.8 54.1C278.5 48.8 272.2 44.8 263.6 46.5C253.5 48.5 245.8 53.6 241.8 59.8Z"/>
+                <path d="M40 123V121.2C45.2 120.8 46.8 119.2 47.2 112.4L49.4 79.6C49.8 73.2 48.2 71.4 42.4 71V69.2H57.6L76.4 108.8L95.2 69.2H110.2V71C104.6 71.4 103.2 73.2 103.6 79.6L105.8 112.4C106.2 119.2 107.8 120.8 113 121.2V123H91.6V121.2C96.8 120.8 98.2 119.2 97.8 112.4L96.1 81.4L76.6 122.4H74.4L54.8 81.2L53.1 112.4C52.7 119.2 54.2 120.8 59.6 121.2V123H40Z"/>
+                <path d="M148.6 64.5L158.8 55.2L163.2 58.4L150.6 66.2L148.6 64.5ZM123.5 123V121.2C128.8 120.8 130.2 119.2 130.2 112.6V79.6C130.2 73 128.8 71.4 123.5 71V69.2H165.4L166.2 80.4H164.2C162.8 74.2 160.4 72.2 152.6 72.2H138.6V93.8H150.8C156.8 93.8 158.6 92.2 159.6 87.2H161.4V103.6H159.6C158.6 98.4 156.8 96.8 150.8 96.8H138.6V113.4C138.6 118.8 140.4 120 147.8 120H154.6C162.2 120 165.4 117.4 167.8 110.4H169.8L167.6 123H123.5Z"/>
+                <path d="M178.4 123V121.2C183.8 120.8 185.2 119.2 185.2 112.6V79.6C185.2 73 183.8 71.4 178.4 71V69.2H200.4V71C195 71.4 193.6 73 193.6 79.6V113.4C193.6 118.8 195.2 120 202.4 120H208.2C215.8 120 218.8 117.4 221.2 110.2H223.2L221 123H178.4Z"/>
+                <path d="M259.6 124.2C241.8 124.2 229.2 112.2 229.2 96.1C229.2 79.8 242.2 68 260.2 68C278.2 68 290.8 79.8 290.8 96.1C290.8 112.4 277.8 124.2 259.6 124.2ZM260.2 121.2C272.6 121.2 281.2 111.2 281.2 96.1C281.2 80.8 272.4 71 259.8 71C247.4 71 238.8 80.8 238.8 96.1C238.8 111.2 247.6 121.2 260.2 121.2Z"/>
+                <path d="M300.6 123V121.2C306 120.8 307.4 119.2 307.4 112.6V79.6C307.4 73 306 71.4 300.6 71V69.2H324.6C338.8 69.2 347.2 74.8 347.2 84.4C347.2 92.4 341.2 97.6 331.4 99.4C335.4 103.6 341.8 111.6 349.4 119.8C359.8 130.8 372.4 134.8 386.6 129.4L387.4 131C372.2 138.8 355.6 136.4 342.4 123.6C334.6 116 327.6 106.6 322.2 100.2H315.8V112.6C315.8 119.2 317.2 120.8 322.6 121.2V123H300.6ZM315.8 97.2H322.8C332.8 97.2 338.2 92.4 338.2 84.6C338.2 76.6 332.8 72.2 322.6 72.2H315.8V97.2Z"/>
+                <path d="M359.2 123V121.2C363.8 120.6 365.8 118.6 368.6 111.6L385.8 68.4H388.4L406.4 112.2C409.2 119 411.2 120.8 415.8 121.2V123H395.2V121.2C399.8 120.8 400.8 119.2 399 114.6L395.2 105H374.6L371 114.4C369.2 119.2 370.4 120.8 375.2 121.2V123H359.2ZM375.8 101.8H394L384.8 78.6L375.8 101.8Z"/>
+                <polygon points="48,143.5 96,142.8 96,144.2"/>
+                <polygon points="412,143.5 364,142.8 364,144.2"/>
+                <text x="230" y="147.5" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="13.5" font-weight="500" letter-spacing="5.8">
+                  PÂTISSERIE &amp; DESSERTS
+                </text>
+              </g>
+            </svg>
+          </a>
+          <p class="text-xs text-melora-muted leading-relaxed max-w-xs mb-5">
+            Every Bite, A Beautiful Moment. Handcrafted French-inspired pâtisserie, single-origin chocolates, and celebration creations baked fresh daily.
+          </p>
+          <span class="inline-flex items-center gap-2 text-[11px] font-medium text-melora-warm bg-white/85 px-3.5 py-1.5 rounded-full border border-melora-border">
+            <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+            Same-Day Chilled Delivery in Chennai &amp; Pan-India Gifting
+          </span>
+        </div>
+
+        <!-- Column 1: Collections -->
+        <div class="lg:col-span-2">
+          <h3 class="font-editorial text-lg font-semibold text-melora-primary mb-3.5">Collections</h3>
+          <ul class="space-y-2 text-xs text-melora-muted">
+            <li><button type="button" onclick="filterAndScroll('Viennoiserie')" class="hover:text-melora-primary transition-colors">Viennoiserie</button></li>
+            <li><button type="button" onclick="filterAndScroll('Patisserie')" class="hover:text-melora-primary transition-colors">Patisserie</button></li>
+            <li><button type="button" onclick="filterAndScroll('Macaron House')" class="hover:text-melora-primary transition-colors">Macaron House</button></li>
+            <li><button type="button" onclick="filterAndScroll('Chocolaterie')" class="hover:text-melora-primary transition-colors">Chocolaterie</button></li>
+            <li><button type="button" onclick="filterAndScroll('Pistachio Atelier')" class="hover:text-melora-primary transition-colors">Pistachio Atelier</button></li>
+          </ul>
+        </div>
+
+        <!-- Column 2: Company -->
+        <div class="lg:col-span-2">
+          <h3 class="font-editorial text-lg font-semibold text-melora-primary mb-3.5">Company</h3>
+          <ul class="space-y-2 text-xs text-melora-muted">
+            <li><a href="#our-story" class="hover:text-melora-primary transition-colors">Our Story</a></li>
+            <li><a href="#journal-section" class="hover:text-melora-primary transition-colors">Journal</a></li>
+            <li><button type="button" onclick="openGiftBoxBuilder()" class="hover:text-melora-primary transition-colors">Gifting</button></li>
+            <li><button type="button" onclick="openLocationsModal()" class="hover:text-melora-primary transition-colors">Contact &amp; Boutiques</button></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Support -->
+        <div class="lg:col-span-2">
+          <h3 class="font-editorial text-lg font-semibold text-melora-primary mb-3.5">Support</h3>
+          <ul class="space-y-2 text-xs text-melora-muted">
+            <li><a href="#faq-section" class="hover:text-melora-primary transition-colors">FAQs</a></li>
+            <li><button type="button" onclick="openPolicyModal('Shipping & Cold-Chain Delivery')" class="hover:text-melora-primary transition-colors">Shipping</button></li>
+            <li><button type="button" onclick="openPolicyModal('Freshness Guarantee & Returns')" class="hover:text-melora-primary transition-colors">Returns</button></li>
+            <li><button type="button" onclick="openPolicyModal('Terms & Conditions')" class="hover:text-melora-primary transition-colors">Terms &amp; Conditions</button></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Join Our Newsletter -->
+        <div class="lg:col-span-2">
+          <h3 class="font-editorial text-lg font-semibold text-melora-primary mb-2">Join Our Newsletter</h3>
+          <p class="text-xs text-melora-muted mb-3.5">Be the first to know about seasonal tarts &amp; limited releases.</p>
+          <form id="newsletter-form" novalidate class="space-y-2">
+            <div class="relative flex items-center">
+              <label for="newsletter-email" class="sr-only">Email address</label>
+              <input id="newsletter-email" type="email" required placeholder="Enter your email"
+                class="w-full bg-white border border-melora-border rounded-full pl-4 pr-11 py-2.5 text-xs text-melora-primary placeholder:text-melora-muted/70 focus:border-melora-warm" />
+              <button type="submit" aria-label="Subscribe to newsletter" class="absolute right-1.5 w-7 h-7 rounded-full bg-melora-cocoaDark hover:bg-melora-warm text-white flex items-center justify-center text-xs transition-colors">
+                →
+              </button>
+            </div>
+            <p id="newsletter-feedback" class="text-[11px] min-h-[16px]" aria-live="polite"></p>
+          </form>
+
+          <!-- Social Icons -->
+          <div class="flex items-center gap-3 mt-3 text-melora-primary">
+            <a href="#top" onclick="showToast('Follow @melora.patisserie on Instagram'); return false;" aria-label="Instagram" class="w-8 h-8 rounded-full border border-melora-border bg-white/80 hover:bg-melora-cocoaDark hover:text-white flex items-center justify-center transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="3" width="18" height="18" rx="5"/>
+                <circle cx="12" cy="12" r="4"/>
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+              </svg>
+            </a>
+            <a href="#top" onclick="showToast('Explore MÉLORA Lookbooks on Pinterest'); return false;" aria-label="Pinterest" class="w-8 h-8 rounded-full border border-melora-border bg-white/80 hover:bg-melora-cocoaDark hover:text-white flex items-center justify-center transition-colors">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.04-2.83.18-.77 1.18-5.01 1.18-5.01s-.3-.6-.3-1.49c0-1.4.81-2.44 1.82-2.44.86 0 1.27.64 1.27 1.41 0 .86-.55 2.15-.83 3.34-.24 1 .5 1.81 1.48 1.81 1.78 0 3.14-1.87 3.14-4.58 0-2.39-1.72-4.07-4.18-4.07-2.85 0-4.52 2.14-4.52 4.35 0 .86.33 1.78.75 2.28.08.1.09.19.07.29-.08.31-.25 1-.28 1.14-.04.18-.15.22-.34.13-1.25-.58-2.03-2.41-2.03-3.88 0-3.16 2.3-6.06 6.62-6.06 3.48 0 6.18 2.48 6.18 5.79 0 3.45-2.18 6.23-5.2 6.23-1.02 0-1.97-.53-2.3-1.15l-.63 2.39c-.23.87-.84 1.96-1.25 2.62.94.29 1.94.45 2.98.45 5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
+              </svg>
+            </a>
+            <a href="#top" onclick="showToast('Visit MÉLORA Pâtisserie on Facebook'); return false;" aria-label="Facebook" class="w-8 h-8 rounded-full border border-melora-border bg-white/80 hover:bg-melora-cocoaDark hover:text-white flex items-center justify-center transition-colors">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5z"/>
+              </svg>
+            </a>
+            <a href="#top" onclick="showToast('Watch MÉLORA Atelier Films on YouTube'); return false;" aria-label="YouTube" class="w-8 h-8 rounded-full border border-melora-border bg-white/80 hover:bg-melora-cocoaDark hover:text-white flex items-center justify-center transition-colors">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Copyright Row -->
+      <div class="pt-7 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-melora-muted">
+        <p>© 2026 MÉLORA Pâtisserie &amp; Desserts. All rights reserved.</p>
+        <p>Crafted with passion, couverture chocolate &amp; love.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== 10. INTERACTIVE MODALS & SLIDE-OVER DRAWERS ==================== -->
+
+  <!-- Backdrop Overlay -->
+  <div id="global-backdrop" onclick="closeAllOverlays()" class="fixed inset-0 bg-melora-cocoaDark/50 backdrop-blur-xs z-50 hidden opacity-0 transition-opacity duration-300"></div>
+
+  <!-- A. MOBILE NAVIGATION DRAWER -->
+  <aside id="mobile-nav-drawer" aria-label="Mobile Navigation" aria-hidden="true"
+    class="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-melora-page z-[60] shadow-2xl border-l border-melora-border transform translate-x-full transition-transform duration-300 flex flex-col justify-between p-6">
+    <div>
+      <div class="flex items-center justify-between pb-5 border-b border-melora-border">
+        <svg class="h-11 w-auto text-[#3B1E12]" viewBox="0 0 460 156" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MÉLORA Pâtisserie & Desserts">
+          <g fill="currentColor">
+            <path d="M230 2C231.6 8.2 233.8 10.4 240 12C233.8 13.6 231.6 15.8 230 22C228.4 15.8 226.2 13.6 220 12C226.2 10.4 228.4 8.2 230 2Z"/>
+            <path d="M228.2 61C227.5 47 222.5 34 214.2 27.5C207.8 22.5 199.5 24.5 198 31.8C196.6 38.6 202.2 44.5 210.8 48.2C218.5 51.5 224.8 55.6 228.2 61ZM225.4 53.6C220.4 49.4 214.2 46.2 208.8 43.6C203.2 40.9 200.6 36.8 201.6 32.5C202.6 28.2 207.8 27.2 212.4 30.8C218.6 35.6 223.2 44.2 225.4 53.6Z"/>
+            <path d="M231.8 61C232.5 47 237.5 34 245.8 27.5C252.2 22.5 260.5 24.5 262 31.8C263.4 38.6 257.8 44.5 249.2 48.2C241.5 51.5 235.2 55.6 231.8 61ZM234.6 53.6C239.6 49.4 245.8 46.2 251.2 43.6C256.8 40.9 259.4 36.8 258.4 32.5C257.4 28.2 252.2 27.2 247.6 30.8C241.4 35.6 236.8 44.2 234.6 53.6Z"/>
+            <path d="M226.4 63.5C221.2 53.2 210.5 45.2 197.5 42.6C186.2 40.3 177.2 46.2 178.4 54.6C179.4 61.5 186.8 64.8 195.8 63.4C206.4 61.8 217.5 61.2 226.4 63.5ZM218.2 59.8C210.2 58.6 201.6 59.1 194.2 60.1C187.8 61 182.8 58.8 182.2 54.1C181.5 48.8 187.8 44.8 196.4 46.5C206.5 48.5 214.2 53.6 218.2 59.8Z"/>
+            <path d="M233.6 63.5C238.8 53.2 249.5 45.2 262.5 42.6C273.8 40.3 282.8 46.2 281.6 54.6C280.6 61.5 273.2 64.8 264.2 63.4C253.6 61.8 242.5 61.2 233.6 63.5ZM241.8 59.8C249.8 58.6 258.4 59.1 265.8 60.1C272.2 61 277.2 58.8 277.8 54.1C278.5 48.8 272.2 44.8 263.6 46.5C253.5 48.5 245.8 53.6 241.8 59.8Z"/>
+            <path d="M40 123V121.2C45.2 120.8 46.8 119.2 47.2 112.4L49.4 79.6C49.8 73.2 48.2 71.4 42.4 71V69.2H57.6L76.4 108.8L95.2 69.2H110.2V71C104.6 71.4 103.2 73.2 103.6 79.6L105.8 112.4C106.2 119.2 107.8 120.8 113 121.2V123H91.6V121.2C96.8 120.8 98.2 119.2 97.8 112.4L96.1 81.4L76.6 122.4H74.4L54.8 81.2L53.1 112.4C52.7 119.2 54.2 120.8 59.6 121.2V123H40Z"/>
+            <path d="M148.6 64.5L158.8 55.2L163.2 58.4L150.6 66.2L148.6 64.5ZM123.5 123V121.2C128.8 120.8 130.2 119.2 130.2 112.6V79.6C130.2 73 128.8 71.4 123.5 71V69.2H165.4L166.2 80.4H164.2C162.8 74.2 160.4 72.2 152.6 72.2H138.6V93.8H150.8C156.8 93.8 158.6 92.2 159.6 87.2H161.4V103.6H159.6C158.6 98.4 156.8 96.8 150.8 96.8H138.6V113.4C138.6 118.8 140.4 120 147.8 120H154.6C162.2 120 165.4 117.4 167.8 110.4H169.8L167.6 123H123.5Z"/>
+            <path d="M178.4 123V121.2C183.8 120.8 185.2 119.2 185.2 112.6V79.6C185.2 73 183.8 71.4 178.4 71V69.2H200.4V71C195 71.4 193.6 73 193.6 79.6V113.4C193.6 118.8 195.2 120 202.4 120H208.2C215.8 120 218.8 117.4 221.2 110.2H223.2L221 123H178.4Z"/>
+            <path d="M259.6 124.2C241.8 124.2 229.2 112.2 229.2 96.1C229.2 79.8 242.2 68 260.2 68C278.2 68 290.8 79.8 290.8 96.1C290.8 112.4 277.8 124.2 259.6 124.2ZM260.2 121.2C272.6 121.2 281.2 111.2 281.2 96.1C281.2 80.8 272.4 71 259.8 71C247.4 71 238.8 80.8 238.8 96.1C238.8 111.2 247.6 121.2 260.2 121.2Z"/>
+            <path d="M300.6 123V121.2C306 120.8 307.4 119.2 307.4 112.6V79.6C307.4 73 306 71.4 300.6 71V69.2H324.6C338.8 69.2 347.2 74.8 347.2 84.4C347.2 92.4 341.2 97.6 331.4 99.4C335.4 103.6 341.8 111.6 349.4 119.8C359.8 130.8 372.4 134.8 386.6 129.4L387.4 131C372.2 138.8 355.6 136.4 342.4 123.6C334.6 116 327.6 106.6 322.2 100.2H315.8V112.6C315.8 119.2 317.2 120.8 322.6 121.2V123H300.6ZM315.8 97.2H322.8C332.8 97.2 338.2 92.4 338.2 84.6C338.2 76.6 332.8 72.2 322.6 72.2H315.8V97.2Z"/>
+            <path d="M359.2 123V121.2C363.8 120.6 365.8 118.6 368.6 111.6L385.8 68.4H388.4L406.4 112.2C409.2 119 411.2 120.8 415.8 121.2V123H395.2V121.2C399.8 120.8 400.8 119.2 399 114.6L395.2 105H374.6L371 114.4C369.2 119.2 370.4 120.8 375.2 121.2V123H359.2ZM375.8 101.8H394L384.8 78.6L375.8 101.8Z"/>
+            <polygon points="48,143.5 96,142.8 96,144.2"/>
+            <polygon points="412,143.5 364,142.8 364,144.2"/>
+            <text x="230" y="147.5" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="13.5" font-weight="500" letter-spacing="5.8">
+              PÂTISSERIE &amp; DESSERTS
+            </text>
+          </g>
+        </svg>
+        <button type="button" onclick="closeAllOverlays()" aria-label="Close navigation menu" class="w-9 h-9 rounded-full bg-melora-blush flex items-center justify-center text-melora-primary">✕</button>
+      </div>
+      <nav class="mt-6 flex flex-col gap-2 text-sm font-medium">
+        <button type="button" onclick="closeAllOverlays(); scrollToElement('signature-delights')" class="text-left px-4 py-3 rounded-xl hover:bg-melora-blush">Collections</button>
+        <button type="button" onclick="closeAllOverlays(); scrollToElement('our-story')" class="text-left px-4 py-3 rounded-xl hover:bg-melora-blush">Our Story</button>
+        <button type="button" onclick="closeAllOverlays(); scrollToElement('journal-section')" class="text-left px-4 py-3 rounded-xl hover:bg-melora-blush">Journal</button>
+        <button type="button" onclick="closeAllOverlays(); openGiftBoxBuilder()" class="text-left px-4 py-3 rounded-xl hover:bg-melora-blush">Premium Gifting</button>
+        <button type="button" onclick="closeAllOverlays(); openLocationsModal()" class="text-left px-4 py-3 rounded-xl hover:bg-melora-blush">Boutique Locations</button>
+        <button type="button" onclick="closeAllOverlays(); openAccountModal()" class="text-left px-4 py-3 rounded-xl hover:bg-melora-blush">Member Account</button>
+      </nav>
+    </div>
+    <div class="pt-5 border-t border-melora-border">
+      <button type="button" onclick="closeAllOverlays(); openCartDrawer()" class="w-full py-3.5 rounded-full bg-melora-cocoaDark text-white text-xs font-semibold">
+        View Shopping Bag
+      </button>
+    </div>
+  </aside>
+
+  <!-- B. PRODUCT CUSTOMIZATION & QUICK-VIEW MODAL -->
+  <div id="product-modal" role="dialog" aria-modal="true" aria-labelledby="pm-title"
+    class="fixed inset-0 z-[70] hidden items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div class="bg-melora-page rounded-[2rem] border border-melora-border shadow-2xl max-w-3xl w-full overflow-hidden my-auto relative">
+      <button type="button" onclick="closeAllOverlays()" aria-label="Close product details"
+        class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/90 hover:bg-melora-cocoaDark hover:text-white text-melora-primary border border-melora-border flex items-center justify-center text-sm transition-colors">
+        ✕
+      </button>
+
+      <div class="grid grid-cols-1 md:grid-cols-12">
+        <!-- Left Image Column -->
+        <div class="md:col-span-5 bg-melora-blush relative min-h-[260px]">
+          <img id="pm-image" src="" alt="" class="w-full h-full object-cover" />
+          <span id="pm-dietary-badge" class="absolute bottom-3 left-3 bg-white/92 backdrop-blur-md text-[10px] font-semibold uppercase tracking-wider text-emerald-800 px-3 py-1 rounded-full border border-melora-border">
+            100% Eggless Available
+          </span>
+        </div>
+
+        <!-- Right Customization Controls -->
+        <div class="md:col-span-7 p-6 sm:p-8 flex flex-col justify-between max-h-[85vh] overflow-y-auto">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-1">
+              <span id="pm-category" class="text-[10.5px] font-semibold uppercase tracking-[0.22em] text-melora-warm">Patisserie</span>
+              <span id="pm-rating" class="text-xs font-medium text-melora-muted">★ 4.9 (128 reviews)</span>
+            </div>
+            <h2 id="pm-title" class="font-editorial text-2xl sm:text-3xl font-semibold text-melora-primary leading-tight">
+              Dessert Name
+            </h2>
+            <p id="pm-price" class="text-lg font-bold text-melora-warm mt-1">₹1,250</p>
+            <p id="pm-desc" class="text-xs sm:text-sm text-melora-muted leading-relaxed mt-3">
+              Tasting notes and ingredients.
+            </p>
+            <p id="pm-allergens" class="text-[11px] text-melora-muted/90 bg-melora-cream px-3 py-2 rounded-xl border border-melora-border/80 mt-3">
+              Ingredients &amp; Allergens
+            </p>
+
+            <!-- Portion / Size Selector -->
+            <div class="mt-5">
+              <label class="block text-xs font-semibold text-melora-primary mb-2">Select Portion / Size</label>
+              <div id="pm-size-options" class="grid grid-cols-2 gap-2">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+
+            <!-- Custom Chocolate Plaque Inscription -->
+            <div class="mt-4">
+              <label for="pm-inscription" class="block text-xs font-semibold text-melora-primary mb-1.5">
+                Custom Chocolate Plaque Message <span class="font-normal text-melora-muted">(Optional)</span>
+              </label>
+              <input id="pm-inscription" type="text" maxlength="40" placeholder="e.g., Happy Anniversary, Joyeux Anniversaire..."
+                class="w-full bg-white border border-melora-border rounded-xl px-3.5 py-2 text-xs text-melora-primary placeholder:text-melora-muted/65" />
+            </div>
+
+            <!-- Preferred Delivery Date -->
+            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label for="pm-delivery-date" class="block text-xs font-semibold text-melora-primary mb-1.5">Preferred Delivery Date</label>
+                <input id="pm-delivery-date" type="date"
+                  class="w-full bg-white border border-melora-border rounded-xl px-3.5 py-2 text-xs text-melora-primary" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-melora-primary mb-1.5">Quantity</label>
+                <div class="flex items-center border border-melora-border rounded-xl bg-white overflow-hidden h-[34px]">
+                  <button type="button" onclick="adjustModalQty(-1)" aria-label="Decrease quantity" class="w-10 h-full hover:bg-melora-blush text-sm font-bold">−</button>
+                  <span id="pm-qty" class="flex-1 text-center text-xs font-semibold">1</span>
+                  <button type="button" onclick="adjustModalQty(1)" aria-label="Increase quantity" class="w-10 h-full hover:bg-melora-blush text-sm font-bold">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex items-center gap-3 pt-6 mt-5 border-t border-melora-border">
+            <button type="button" id="pm-wishlist-btn" onclick="toggleCurrentModalWishlist()" aria-label="Save to wishlist"
+              class="w-11 h-11 rounded-full border border-melora-border bg-white hover:bg-melora-blush flex items-center justify-center text-melora-primary shrink-0 transition-colors">
+              ♡
+            </button>
+            <button type="button" onclick="confirmAddFromModal()" class="flex-1 py-3.5 px-6 rounded-full bg-melora-cocoaDark hover:bg-melora-warm text-white text-xs sm:text-sm font-semibold shadow-md transition-colors">
+              Add to Shopping Bag
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C. SLIDE-OVER SHOPPING BAG DRAWER -->
+  <aside id="cart-drawer" role="dialog" aria-modal="true" aria-label="Shopping Bag"
+    class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-melora-page z-[70] shadow-2xl border-l border-melora-border transform translate-x-full transition-transform duration-300 flex flex-col">
+
+    <!-- Drawer Header -->
+    <div class="p-5 sm:p-6 bg-melora-cream border-b border-melora-border flex items-center justify-between">
+      <div>
+        <h2 class="font-editorial text-2xl font-semibold text-melora-primary">Your MÉLORA Bag</h2>
+        <p id="cart-subtitle" class="text-xs text-melora-muted mt-0.5">2 handcrafted creations selected</p>
+      </div>
+      <button type="button" onclick="closeAllOverlays()" aria-label="Close shopping bag"
+        class="w-9 h-9 rounded-full bg-white hover:bg-melora-cocoaDark hover:text-white border border-melora-border flex items-center justify-center text-sm transition-colors">
+        ✕
+      </button>
+    </div>
+
+    <!-- Free Chilled Delivery Progress Bar -->
+    <div class="px-5 sm:px-6 py-3 bg-melora-blush/70 border-b border-melora-border">
+      <p id="delivery-progress-text" class="text-[11px] font-medium text-melora-primary mb-1.5">
+        Add ₹450 more to unlock complimentary white-glove chilled delivery
+      </p>
+      <div class="w-full h-1.5 bg-white rounded-full overflow-hidden">
+        <div id="delivery-progress-bar" class="h-full bg-melora-warm rounded-full transition-all duration-300" style="width: 82%;"></div>
+      </div>
+    </div>
+
+    <!-- Cart Line Items -->
+    <div id="cart-items-list" class="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4">
+      <!-- Dynamically populated -->
+    </div>
+
+    <!-- Cart Footer & Promo Code -->
+    <div class="p-5 sm:p-6 bg-melora-cream border-t border-melora-border space-y-3.5">
+      <!-- Promo Code Input -->
+      <form id="promo-form" class="flex items-center gap-2">
+        <label for="promo-input" class="sr-only">Promo code</label>
+        <input id="promo-input" type="text" placeholder="Promo code (try MELORA10)"
+          class="flex-1 bg-white border border-melora-border rounded-full px-4 py-2 text-xs text-melora-primary uppercase placeholder:normal-case" />
+        <button type="submit" class="px-4 py-2 rounded-full bg-melora-blush hover:bg-melora-cocoaDark hover:text-white border border-melora-border text-xs font-semibold text-melora-primary transition-colors">
+          Apply
+        </button>
+      </form>
+      <p id="promo-status" class="text-[11px] text-emerald-700 hidden"></p>
+
+      <!-- Totals -->
+      <div class="space-y-1.5 text-xs">
+        <div class="flex justify-between text-melora-muted">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">₹2,050</span>
+        </div>
+        <div id="cart-discount-row" class="hidden justify-between text-emerald-700 font-medium">
+          <span>Atelier Privilege (10% Off)</span>
+          <span id="cart-discount">-₹0</span>
+        </div>
+        <div class="flex justify-between text-melora-muted">
+          <span>Chilled Packaging &amp; Delivery</span>
+          <span id="cart-shipping">₹150</span>
+        </div>
+        <div class="flex justify-between text-sm font-bold text-melora-primary pt-2 border-t border-melora-border">
+          <span>Total (Incl. GST)</span>
+          <span id="cart-total">₹2,200</span>
+        </div>
+      </div>
+
+      <button type="button" id="checkout-btn" onclick="openCheckoutModal()"
+        class="w-full py-3.5 rounded-full bg-melora-cocoaDark hover:bg-melora-warm text-white text-xs sm:text-sm font-semibold shadow-editorial transition-colors">
+        Proceed to Express Checkout →
+      </button>
+    </div>
+  </aside>
+
+  <!-- D. WISHLIST SLIDE-OVER DRAWER -->
+  <aside id="wishlist-drawer" role="dialog" aria-modal="true" aria-label="Saved Wishlist"
+    class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-melora-page z-[70] shadow-2xl border-l border-melora-border transform translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="p-5 sm:p-6 bg-melora-cream border-b border-melora-border flex items-center justify-between">
+      <div>
+        <h2 class="font-editorial text-2xl font-semibold text-melora-primary">Saved Favorites</h2>
+        <p class="text-xs text-melora-muted mt-0.5">Your curated list of MÉLORA cravings</p>
+      </div>
+      <button type="button" onclick="closeAllOverlays()" aria-label="Close wishlist"
+        class="w-9 h-9 rounded-full bg-white hover:bg-melora-cocoaDark hover:text-white border border-melora-border flex items-center justify-center text-sm transition-colors">
+        ✕
+      </button>
+    </div>
+    <div id="wishlist-items-list" class="flex-1 overflow-y-auto p-5 sm:p-6 space-y-3.5">
+      <!-- Dynamically populated -->
+    </div>
+  </aside>
+
+  <!-- E. CUSTOM GIFT BOX BUILDER MODAL -->
+  <div id="giftbox-modal" role="dialog" aria-modal="true" aria-labelledby="gb-title"
+    class="fixed inset-0 z-[70] hidden items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div class="bg-melora-page rounded-[2rem] border border-melora-border shadow-2xl max-w-2xl w-full p-6 sm:p-8 relative my-auto">
+      <button type="button" onclick="closeAllOverlays()" aria-label="Close gift box builder"
+        class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white border border-melora-border hover:bg-melora-cocoaDark hover:text-white flex items-center justify-center text-sm transition-colors">
+        ✕
+      </button>
+      <span class="text-[10.5px] font-semibold uppercase tracking-[0.24em] text-melora-warm">BESPOKE GIFTING ATELIER</span>
+      <h2 id="gb-title" class="font-editorial text-3xl font-semibold text-melora-primary mt-1">Curate Your Keepsake Gift Box</h2>
+      <p class="text-xs sm:text-sm text-melora-muted mt-1">Hand-packed in embossed ivory &amp; gold rigid boxes with satin silk ribbon.</p>
+
+      <div class="mt-5 space-y-5">
+        <div>
+          <label class="block text-xs font-semibold text-melora-primary mb-2">1. Choose Box Assortment Size</label>
+          <div class="grid grid-cols-3 gap-2.5">
+            <button type="button" data-gb-size="0" onclick="selectGiftBoxSize(0)" class="gb-size-btn p-3 rounded-2xl border-2 border-melora-cocoaDark bg-melora-blush/60 text-left">
+              <span class="block text-xs font-bold text-melora-primary">Petite 6-Piece</span>
+              <span class="block text-[11px] text-melora-muted mt-0.5">₹1,150</span>
+            </button>
+            <button type="button" data-gb-size="1" onclick="selectGiftBoxSize(1)" class="gb-size-btn p-3 rounded-2xl border border-melora-border bg-white text-left">
+              <span class="block text-xs font-bold text-melora-primary">Signature 12-Piece</span>
+              <span class="block text-[11px] text-melora-muted mt-0.5">₹2,100</span>
+            </button>
+            <button type="button" data-gb-size="2" onclick="selectGiftBoxSize(2)" class="gb-size-btn p-3 rounded-2xl border border-melora-border bg-white text-left">
+              <span class="block text-xs font-bold text-melora-primary">Grand 24-Piece</span>
+              <span class="block text-[11px] text-melora-muted mt-0.5">₹3,950</span>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-melora-primary mb-2">2. Select Silk Ribbon &amp; Wax Seal</label>
+          <div class="flex flex-wrap gap-2.5">
+            <button type="button" onclick="selectRibbon('Champagne Gold Silk')" class="ribbon-btn px-4 py-2 rounded-full text-xs font-medium border-2 border-melora-cocoaDark bg-melora-blush">Champagne Gold Silk</button>
+            <button type="button" onclick="selectRibbon('Blush Rose Satin')" class="ribbon-btn px-4 py-2 rounded-full text-xs font-medium border border-melora-border bg-white">Blush Rose Satin</button>
+            <button type="button" onclick="selectRibbon('Espresso Velvet')" class="ribbon-btn px-4 py-2 rounded-full text-xs font-medium border border-melora-border bg-white">Espresso Velvet</button>
+          </div>
+        </div>
+
+        <div>
+          <label for="gb-note" class="block text-xs font-semibold text-melora-primary mb-1.5">3. Complimentary Wax-Sealed Gift Card Message</label>
+          <textarea id="gb-note" rows="2" maxlength="120" placeholder="Write a heartfelt note for your recipient..."
+            class="w-full bg-white border border-melora-border rounded-2xl p-3 text-xs text-melora-primary"></textarea>
+        </div>
+
+        <button type="button" onclick="addGiftBoxToCart()" class="w-full py-3.5 rounded-full bg-melora-cocoaDark hover:bg-melora-warm text-white text-xs sm:text-sm font-semibold transition-colors">
+          Add Custom Gift Box to Bag — <span id="gb-price-label">₹1,150</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- F. JOURNAL / EDITORIAL STORY / EXPERIENCE READER MODAL -->
+  <div id="editorial-modal" role="dialog" aria-modal="true" aria-labelledby="ed-title"
+    class="fixed inset-0 z-[70] hidden items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div class="bg-melora-page rounded-[2rem] border border-melora-border shadow-2xl max-w-2xl w-full overflow-hidden my-auto relative">
+      <button type="button" onclick="closeAllOverlays()" aria-label="Close article"
+        class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/90 border border-melora-border hover:bg-melora-cocoaDark hover:text-white flex items-center justify-center text-sm transition-colors">
+        ✕
+      </button>
+      <div class="h-56 sm:h-64 overflow-hidden bg-melora-blush">
+        <img id="ed-image" src="" alt="" class="w-full h-full object-cover" />
+      </div>
+      <div class="p-6 sm:p-8">
+        <span id="ed-eyebrow" class="text-[10.5px] font-semibold uppercase tracking-[0.24em] text-melora-warm">FROM OUR JOURNAL</span>
+        <h2 id="ed-title" class="font-editorial text-2xl sm:text-3xl font-semibold text-melora-primary mt-1">Article Title</h2>
+        <div id="ed-body" class="text-xs sm:text-sm text-melora-muted leading-relaxed mt-3 space-y-3"></div>
+        <div id="ed-cta-wrap" class="mt-6 pt-4 border-t border-melora-border flex justify-end">
+          <button type="button" onclick="closeAllOverlays()" class="px-6 py-2.5 rounded-full bg-melora-cocoaDark text-white text-xs font-semibold">
+            Continue Exploring
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- G. LIVE SEARCH MODAL -->
+  <div id="search-modal" role="dialog" aria-modal="true" aria-label="Search MÉLORA Desserts"
+    class="fixed inset-0 z-[70] hidden items-start justify-center pt-16 sm:pt-24 p-4">
+    <div class="bg-melora-page rounded-[2rem] border border-melora-border shadow-2xl max-w-xl w-full p-5 sm:p-6">
+      <div class="flex items-center gap-3 pb-4 border-b border-melora-border">
+        <svg class="w-5 h-5 text-melora-warm shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M20 20l-3.5-3.5"/>
+        </svg>
+        <input id="live-search-input" type="search" placeholder="Search mille-feuille, pistachio, macarons, chocolate..."
+          class="flex-1 bg-transparent text-sm text-melora-primary focus:outline-none" />
+        <button type="button" onclick="closeAllOverlays()" class="text-xs text-melora-muted hover:text-melora-primary px-2 py-1">ESC</button>
+      </div>
+      <div id="search-results-list" class="max-h-80 overflow-y-auto divide-y divide-melora-border/60 mt-2">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- H. EXPRESS CHECKOUT & ORDER CONFIRMATION MODAL -->
+  <div id="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="co-title"
+    class="fixed inset-0 z-[80] hidden items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div class="bg-melora-page rounded-[2rem] border border-melora-border shadow-2xl max-w-lg w-full p-6 sm:p-8 relative my-auto">
+      <button type="button" onclick="closeAllOverlays()" aria-label="Close checkout"
+        class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white border border-melora-border hover:bg-melora-cocoaDark hover:text-white flex items-center justify-center text-sm">
+        ✕
+      </button>
+
+      <div id="checkout-form-view">
+        <span class="text-[10.5px] font-semibold uppercase tracking-[0.24em] text-melora-warm">MÉLORA CONCIERGE</span>
+        <h2 id="co-title" class="font-editorial text-3xl font-semibold text-melora-primary mt-1">Chilled Express Checkout</h2>
+        <p class="text-xs text-melora-muted mt-1">Dispatched in temperature-controlled luxury packaging.</p>
+
+        <form id="checkout-form" class="mt-5 space-y-3.5">
+          <div>
+            <label for="co-name" class="block text-xs font-semibold text-melora-primary mb-1">Full Name</label>
+            <input id="co-name" type="text" required placeholder="Aanya Sharma" class="w-full bg-white border border-melora-border rounded-xl px-3.5 py-2.5 text-xs" />
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="co-phone" class="block text-xs font-semibold text-melora-primary mb-1">Mobile Number</label>
+              <input id="co-phone" type="tel" required placeholder="+91 98400 12345" class="w-full bg-white border border-melora-border rounded-xl px-3.5 py-2.5 text-xs" />
+            </div>
+            <div>
+              <label for="co-city" class="block text-xs font-semibold text-melora-primary mb-1">Delivery City</label>
+              <select id="co-city" class="w-full bg-white border border-melora-border rounded-xl px-3.5 py-2.5 text-xs">
+                <option>Chennai (Same-Day Chilled)</option>
+                <option>Bengaluru (Express Cold-Chain)</option>
+                <option>Mumbai (Express Cold-Chain)</option>
+                <option>New Delhi NCR (Express Cold-Chain)</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label for="co-address" class="block text-xs font-semibold text-melora-primary mb-1">Delivery Address</label>
+            <input id="co-address" type="text" required placeholder="14 Boat Club Road, RA Puram" class="w-full bg-white border border-melora-border rounded-xl px-3.5 py-2.5 text-xs" />
+          </div>
+
+          <div class="bg-melora-cream rounded-2xl p-3.5 border border-melora-border flex items-center justify-between text-xs">
+            <span class="font-medium text-melora-muted">Payable Amount</span>
+            <span id="co-payable" class="text-base font-bold text-melora-primary">₹2,200</span>
+          </div>
+
+          <button type="submit" class="w-full py-3.5 rounded-full bg-melora-cocoaDark hover:bg-melora-warm text-white text-xs sm:text-sm font-semibold transition-colors">
+            Place MÉLORA Order
+          </button>
+        </form>
+      </div>
+
+      <!-- Order Confirmation Receipt -->
+      <div id="checkout-success-view" class="hidden text-center py-4">
+        <div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-800 mx-auto flex items-center justify-center text-2xl mb-4">✓</div>
+        <span class="text-[10.5px] font-semibold uppercase tracking-[0.24em] text-melora-warm">ORDER CONFIRMED</span>
+        <h3 class="font-editorial text-3xl font-semibold text-melora-primary mt-1">Merci, Your Sweet Moment Awaits</h3>
+        <p id="co-receipt-text" class="text-xs sm:text-sm text-melora-muted mt-2 leading-relaxed">
+          Order #MLR-8492 has been received by our pastry chefs.
+        </p>
+        <button type="button" onclick="closeAllOverlays()" class="mt-6 px-7 py-3 rounded-full bg-melora-cocoaDark text-white text-xs font-semibold">
+          Return to MÉLORA Boutique
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT APPLICATION LOGIC ==================== -->
+  <script>
+    // ---------- 1. CURATED DATA CATALOG ----------
+    const HERO_SLIDES = [
+      {
+        eyebrow: 'THE ART OF DESSERTS',
+        headline: 'A Little Magic,<br/>In Every Bite.',
+        subcopy: 'Artisan desserts, crafted to delight. Crisp caramelized puff pastry layered with Madagascar vanilla bean Chantilly and orchard-fresh strawberries.',
+        badge: 'Patisserie Signature',
+        dishTitle: 'Strawberry Chantilly Mille-Feuille',
+        dishPrice: '₹1,250 · Crafted Fresh Daily',
+        productId: 'strawberry-mille-feuille',
+        image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=1400&q=85'
+      },
+      {
+        eyebrow: 'CHOCOLATERIE COUTURE',
+        headline: 'Velvet Cacao,<br/>Sculpted by Hand.',
+        subcopy: 'Single-origin 72% Belgian dark chocolate dome encasing roasted Piedmont hazelnut praline and warm salted caramel.',
+        badge: 'Chocolaterie Icon',
+        dishTitle: '72% Belgian Chocolate Ganache Dome',
+        dishPrice: '₹1,450 · Edible 24K Gold Leaf',
+        productId: 'belgian-chocolate-dome',
+        image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=85'
+      },
+      {
+        eyebrow: 'PISTACHIO ATELIER',
+        headline: 'Emerald Pistachio,<br/>Kissed with Rose.',
+        subcopy: 'Roasted Iranian green pistachio mousseline, Damask rosewater diplomat cream, and crisp almond sablé crust.',
+        badge: 'Atelier Bestseller',
+        dishTitle: 'Iranian Pistachio & Damask Rose Tart',
+        dishPrice: '₹1,350 · Eggless Option Available',
+        productId: 'pistachio-rose-tart',
+        image: 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=1400&q=85'
+      },
+      {
+        eyebrow: 'MACARON HOUSE PARIS',
+        headline: 'Delicate Shells,<br/>Pure Indulgence.',
+        subcopy: 'Crisp almond meringue shells filled with wild raspberry compote, rose lychee ganache, and salted Madagascar vanilla.',
+        badge: 'Couture Gift Box',
+        dishTitle: 'Parisian Rose & Raspberry Macaron Coffret',
+        dishPrice: '₹1,100 · Box of 12 Pieces',
+        productId: 'rose-raspberry-macarons',
+        image: 'https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&w=1400&q=85'
+      }
+    ];
+
+    const PRODUCTS = [
+      {
+        id: 'strawberry-mille-feuille',
+        name: 'Strawberry Chantilly Mille-Feuille',
+        category: 'Patisserie',
+        tag: 'Bestseller',
+        price: 1250,
+        rating: '4.9 (142)',
+        dietary: 'Eggless Available',
+        shortDesc: 'Caramelized inverted puff pastry, Madagascar vanilla diplomat cream & fresh Mahabaleshwar strawberries.',
+        allergens: 'Contains: Gluten, Dairy. Prepared in a kitchen handling tree nuts.',
+        image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=800&q=85',
+        sizes: [
+          { label: 'Individual Slice (2 pcs)', delta: 0 },
+          { label: 'Petite Gateau (500g)', delta: 950 },
+          { label: 'Celebration Cake (1kg)', delta: 2150 }
+        ]
+      },
+      {
+        id: 'belgian-chocolate-dome',
+        name: '72% Belgian Chocolate Ganache Dome',
+        category: 'Chocolaterie',
+        tag: 'Signature',
+        price: 1450,
+        rating: '5.0 (198)',
+        dietary: '100% Eggless',
+        shortDesc: 'Silky single-origin dark chocolate mousse, crunchy hazelnut feuilletine & 24K gold leaf.',
+        allergens: 'Contains: Dairy, Hazelnuts, Soy Lecithin.',
+        image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=85',
+        sizes: [
+          { label: 'Duo Entremets (2 pcs)', delta: 0 },
+          { label: 'Signature Cake (600g)', delta: 1100 },
+          { label: 'Grand Celebration (1.2kg)', delta: 2450 }
+        ]
+      },
+      {
+        id: 'rose-raspberry-macarons',
+        name: 'Rose & Raspberry Macaron Coffret',
+        category: 'Macaron House',
+        tag: 'Gift Favorite',
+        price: 1100,
+        rating: '4.9 (116)',
+        dietary: 'Gluten-Free',
+        shortDesc: 'Delicate French almond shells infused with Damask rosewater and tart raspberry ganache.',
+        allergens: 'Contains: Almonds, Dairy, Egg Whites.',
+        image: 'https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&w=800&q=85',
+        sizes: [
+          { label: 'Coffret of 12 Pieces', delta: 0 },
+          { label: 'Couture Box of 24 Pieces', delta: 950 }
+        ]
+      },
+      {
+        id: 'pistachio-rose-tart',
+        name: 'Iranian Pistachio & Rose Tart',
+        category: 'Pistachio Atelier',
+        tag: 'Chef Special',
+        price: 1350,
+        rating: '4.9 (164)',
+        dietary: '100% Eggless',
+        shortDesc: 'Roasted green pistachio praline, velvety pistachio mousseline & crystallized rose petals.',
+        allergens: 'Contains: Pistachios, Gluten, Dairy.',
+        image: 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=800&q=85',
+        sizes: [
+          { label: 'Pair of Artisanal Tarts', delta: 0 },
+          { label: '7-inch Sharing Tart', delta: 1050 }
+        ]
+      },
+      {
+        id: 'french-butter-croissant',
+        name: 'Isigny Cultured Butter Croissant Box',
+        category: 'Viennoiserie',
+        tag: 'Morning Bake',
+        price: 800,
+        rating: '4.8 (94)',
+        dietary: '100% Eggless',
+        shortDesc: '27 honeycomb layers laminated with Normandy cultured butter for an shatteringly crisp crust.',
+        allergens: 'Contains: Gluten, Dairy.',
+        image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=800&q=85',
+        sizes: [
+          { label: 'Box of 4 Croissants', delta: 0 },
+          { label: 'Box of 8 Assorted', delta: 700 }
+        ]
+      },
+      {
+        id: 'seasonal-berry-mascarpone',
+        name: 'Orchard Berry & Mascarpone Tart',
+        category: 'Seasonal',
+        tag: 'Limited Edition',
+        price: 1390,
+        rating: '4.9 (87)',
+        dietary: '100% Eggless',
+        shortDesc: 'Blackberries, blueberries, and glazed strawberries nestled over vanilla bean mascarpone cream.',
+        allergens: 'Contains: Gluten, Dairy, Almonds.',
+        image: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=800&q=85',
+        sizes: [
+          { label: 'Petite Tart (500g)', delta: 0 },
+          { label: 'Celebration Tart (1kg)', delta: 1200 }
+        ]
+      },
+      {
+        id: 'pistachio-kunafa-bar',
+        name: 'Pistachio Kunafa Couverture Bar',
+        category: 'Pistachio Atelier',
+        tag: 'Trending',
+        price: 950,
+        rating: '5.0 (210)',
+        dietary: '100% Eggless',
+        shortDesc: 'Crisp toasted kataifi pastry folded into stone-ground pistachio cream inside milk couverture chocolate.',
+        allergens: 'Contains: Pistachios, Gluten, Dairy, Soy.',
+        image: 'https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=800&q=85',
+        sizes: [
+          { label: 'Single Luxe Bar (220g)', delta: 0 },
+          { label: 'Duo Tasting Gift Set', delta: 850 }
+        ]
+      },
+      {
+        id: 'strawberry-cream-choux',
+        name: 'Strawberry Crème Diplomate Tartlet',
+        category: 'Patisserie',
+        tag: 'Seasonal',
+        price: 980,
+        rating: '4.8 (73)',
+        dietary: 'Eggless Available',
+        shortDesc: 'Crisp pâte sucrée shell filled with silky pastry cream, berry coulis & fresh strawberries.',
+        allergens: 'Contains: Gluten, Dairy.',
+        image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=800&q=85',
+        sizes: [
+          { label: 'Box of 2 Tartlets', delta: 0 },
+          { label: 'Box of 6 Tartlets', delta: 1750 }
+        ]
+      }
+    ];
+
+    const TESTIMONIALS = [
+      {
+        quote: '“Mélora turns every celebration into something truly special.”',
+        author: '— Valentina Mandarina',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'
+      },
+      {
+        quote: '“The Iranian Pistachio & Rose Tart is pure poetry—delicate, fragrant, and never overly sweet.”',
+        author: '— Aarav Raghavan, Chennai',
+        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80'
+      },
+      {
+        quote: '“Their satin-ribboned macaron coffrets are our go-to luxury gift for every milestone.”',
+        author: '— Meera Krishnan, Bengaluru',
+        avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80'
+      }
+    ];
+
+    const JOURNAL_ARTICLES = [
+      {
+        eyebrow: 'RECIPE & PLATING NOTE',
+        title: 'Molten 70% Cacao & Raspberry Fondant',
+        image: 'https://images.unsplash.com/photo-1624353365286-3f8d62daad51?auto=format&fit=crop&w=1000&q=85',
+        paragraphs: [
+          'The secret to an unforgettable molten chocolate fondant lies in resting the single-origin batter for at least four hours prior to baking. This allows the cocoa butter to crystallize gently, creating a delicate soufflé crust around a warm, liquid ganache heart.',
+          'At MÉLORA, we pair our 70% dark couverture fondant with macerated wild raspberries and a quenelle of Tahitian vanilla Chantilly to balance deep roasted cacao notes with bright orchard acidity.'
+        ]
+      },
+      {
+        eyebrow: 'MERINGUE MASTERY',
+        title: 'Pavlova Cloud Craft & Berry Pairing',
+        image: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1000&q=85',
+        paragraphs: [
+          'A true French-style pavlova demands patience: slow-baked at a gentle 105°C until the exterior turns crisp as porcelain while the marshmallow heart remains cloud-soft.',
+          'We crown each pavlova moments before dispatch with lightly sweetened mascarpone cream, fresh figs, blueberries, and micro-mint leaves so every forkful delivers ethereal crunch and creaminess.'
+        ]
+      },
+      {
+        eyebrow: 'FRENCH CLASSICS',
+        title: 'The Architecture of a Classic Chocolate Éclair',
+        image: 'https://images.unsplash.com/photo-1612203985729-70726954388c?auto=format&fit=crop&w=1000&q=85',
+        paragraphs: [
+          'From piping uniform ridges of pâte à choux to infusing roasted hazelnut praline into silky crème pâtissière, our éclairs honor Parisian tradition in every detail.',
+          'Finished with a mirror-gloss dark chocolate fondant glaze and toasted gold-dusted nibs, each éclair is best enjoyed chilled alongside single-estate espresso.'
+        ]
+      }
+    ];
+
+    const FAQS = [
+      {
+        q: 'Do you offer 100% eggless cakes, tarts, and pastries?',
+        a: 'Yes! Over 85% of our atelier menu—including our 72% Belgian Chocolate Ganache Dome, Iranian Pistachio & Rose Tart, and Isigny Butter Croissants—is crafted 100% eggless using bespoke plant-based emulsifiers that preserve authentic French texture.'
+      },
+      {
+        q: 'Can I request a custom chocolate plaque inscription or bespoke cake size?',
+        a: 'Absolutely. Click any dessert card to open the customization panel where you can add a complimentary hand-piped dark chocolate message plaque (up to 40 characters) and choose between individual portions, 500g petite gateaux, or 1kg+ celebration cakes.'
+      },
+      {
+        q: 'How are MÉLORA desserts delivered to ensure freshness?',
+        a: 'All fresh cakes, tarts, and pastries are dispatched in insulated chilled boxes with food-grade gel packs via our dedicated white-glove fleet in Chennai, and temperature-controlled cold-chain couriers across Bengaluru, Mumbai, and Delhi NCR.'
+      },
+      {
+        q: 'How should I store my desserts and what is the shelf life?',
+        a: 'Fresh cream pâtisserie and tarts should be refrigerated between 2°C and 5°C and enjoyed within 48 hours. Bring cakes to room temperature for 15 minutes before serving for optimal aroma and velvet texture. Macarons and chocolate bars stay fresh for up to 10 days.'
+      },
+      {
+        q: 'Do you provide luxury gift packaging for weddings and corporate gifting?',
+        a: 'Yes. Explore our Premium Gifting section to build custom 6, 12, or 24-piece rigid keepsake boxes finished with hand-tied satin ribbons and a wax-sealed personalized note card.'
+      }
+    ];
+
+    // ---------- 2. APPLICATION STATE ----------
+    let currentHeroIdx = 0;
+    let activeCategory = 'All';
+    let currentTestimonialIdx = 0;
+    let wishlistIds = ['pistachio-rose-tart'];
+    let promoApplied = false;
+
+    let cart = [
+      {
+        uid: 'strawberry-mille-feuille-0',
+        productId: 'strawberry-mille-feuille',
+        name: 'Strawberry Chantilly Mille-Feuille',
+        sizeLabel: 'Individual Slice (2 pcs)',
+        unitPrice: 1250,
+        qty: 1,
+        inscription: '',
+        image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=400&q=80'
+      },
+      {
+        uid: 'french-butter-croissant-0',
+        productId: 'french-butter-croissant',
+        name: 'Isigny Cultured Butter Croissant Box',
+        sizeLabel: 'Box of 4 Croissants',
+        unitPrice: 800,
+        qty: 1,
+        inscription: '',
+        image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=400&q=80'
+      }
+    ];
+
+    // Product Modal State
+    let modalState = {
+      product: null,
+      selectedSizeIndex: 0,
+      qty: 1
+    };
+
+    // Gift Box Builder State
+    const GIFT_BOX_TIERS = [
+      { name: 'Petite 6-Piece Atelier Gift Box', price: 1150 },
+      { name: 'Signature 12-Piece Atelier Gift Box', price: 2100 },
+      { name: 'Grand 24-Piece Atelier Gift Box', price: 3950 }
+    ];
+    let giftBoxState = {
+      tierIndex: 0,
+      ribbon: 'Champagne Gold Silk'
+    };
+
+    // ---------- 3. HERO CAROUSEL LOGIC ----------
+    function renderHeroSlide() {
+      const slide = HERO_SLIDES[currentHeroIdx];
+      document.getElementById('hero-eyebrow').textContent = slide.eyebrow;
+      document.getElementById('hero-headline').innerHTML = slide.headline;
+      document.getElementById('hero-subcopy').textContent = slide.subcopy;
+      document.getElementById('hero-badge-label').textContent = slide.badge;
+      document.getElementById('hero-dish-title').textContent = slide.dishTitle;
+      document.getElementById('hero-dish-price').textContent = slide.dishPrice;
+      document.getElementById('hero-pagination-text').textContent = `0${currentHeroIdx + 1} / 0${HERO_SLIDES.length}`;
+
+      const img = document.getElementById('hero-showcase-img');
+      img.src = slide.image;
+      img.alt = slide.dishTitle;
+
+      document.querySelectorAll('.hero-indicator').forEach((dot, idx) => {
+        if (idx === currentHeroIdx) {
+          dot.classList.remove('w-2', 'bg-melora-cocoaDark/25');
+          dot.classList.add('w-6', 'bg-melora-cocoaDark');
+        } else {
+          dot.classList.remove('w-6', 'bg-melora-cocoaDark');
+          dot.classList.add('w-2', 'bg-melora-cocoaDark/25');
+        }
+      });
+    }
+
+    function stepHeroSlide(dir) {
+      currentHeroIdx = (currentHeroIdx + dir + HERO_SLIDES.length) % HERO_SLIDES.length;
+      renderHeroSlide();
+    }
+
+    function setHeroSlide(idx) {
+      currentHeroIdx = idx;
+      renderHeroSlide();
+    }
+
+    function openHeroFeaturedProduct() {
+      const slide = HERO_SLIDES[currentHeroIdx];
+      openProductModal(slide.productId);
+    }
+
+    // ---------- 4. CATEGORY SELECTION & PRODUCT GRID ----------
+    function selectCategory(category) {
+      activeCategory = category;
+
+      // Update 5 Signature Category Cards ARIA & Active Ring
+      document.querySelectorAll('.cat-card').forEach(card => {
+        const isMatch = card.dataset.categoryCard === category;
+        card.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+        card.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+        if (isMatch) {
+          card.classList.add('ring-2', 'ring-melora-cocoaDark', 'bg-melora-peach/70');
+        } else {
+          card.classList.remove('ring-2', 'ring-melora-cocoaDark', 'bg-melora-peach/70');
+        }
+      });
+
+      // Update Filter Pills
+      document.querySelectorAll('.filter-pill').forEach(pill => {
+        const isMatch = pill.dataset.pill === category;
+        if (isMatch) {
+          pill.classList.remove('bg-white/85', 'text-melora-primary', 'border', 'border-melora-border');
+          pill.classList.add('bg-melora-cocoaDark', 'text-white', 'font-semibold');
+        } else {
+          pill.classList.remove('bg-melora-cocoaDark', 'text-white', 'font-semibold');
+          pill.classList.add('bg-white/85', 'text-melora-primary', 'border', 'border-melora-border');
+        }
+      });
+
+      const heading = document.getElementById('menu-heading');
+      heading.textContent = category === 'All' ? 'All Handcrafted Desserts' : `${category} Collection`;
+
+      renderProductGrid();
+    }
+
+    function filterAndScroll(category) {
+      selectCategory(category);
+      scrollToElement('collection-menu-panel');
+    }
+
+    function scrollProductStrip(direction) {
+      const pillsRow = document.getElementById('category-pills-row');
+      pillsRow.scrollBy({ left: direction * 180, behavior: 'smooth' });
+    }
+
+    function renderProductGrid() {
+      const grid = document.getElementById('product-grid');
+      const filtered = activeCategory === 'All'
+        ? PRODUCTS
+        : PRODUCTS.filter(p => p.category === activeCategory || (activeCategory === 'Seasonal' && p.tag === 'Seasonal'));
+
+      grid.innerHTML = filtered.map(product => {
+        const isWished = wishlistIds.includes(product.id);
+        return `
+          <article class="group bg-white rounded-3xl border border-melora-border/90 overflow-hidden shadow-sm hover:shadow-editorial transition-all duration-300 flex flex-col justify-between">
+            <div>
+              <div class="relative aspect-[4/3] overflow-hidden bg-melora-blush">
+                <img src="${product.image}"
+                     onerror="this.src='https://placehold.co/600x450/F5E4D8/2B1B14?text=MELORA+Dessert'"
+                     alt="${product.name}"
+                     onclick="openProductModal('${product.id}')"
+                     class="w-full h-full object-cover cursor-pointer transition-transform duration-500 group-hover:scale-105" />
+                <span class="absolute top-3 left-3 bg-white/92 backdrop-blur-md text-[10px] font-semibold uppercase tracking-wider text-melora-warm px-3 py-1 rounded-full border border-melora-border/70">
+                  ${product.tag}
+                </span>
+                <button type="button" onclick="toggleWishlist('${product.id}')" aria-label="Save ${product.name} to wishlist"
+                  class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/92 backdrop-blur-md flex items-center justify-center text-sm shadow-xs transition-transform hover:scale-110 ${isWished ? 'text-melora-roseDeep' : 'text-melora-primary'}">
+                  ${isWished ? '♥' : '♡'}
+                </button>
+              </div>
+
+              <div class="p-4 sm:p-5">
+                <div class="flex items-center justify-between gap-2 text-[10.5px] font-medium text-melora-muted mb-1">
+                  <span>${product.category}</span>
+                  <span>★ ${product.rating.split(' ')[0]}</span>
+                </div>
+                <h4 onclick="openProductModal('${product.id}')" class="font-editorial text-xl font-semibold text-melora-primary leading-snug cursor-pointer hover:text-melora-warm transition-colors">
+                  ${product.name}
+                </h4>
+                <p class="text-xs text-melora-muted leading-relaxed mt-1.5 line-clamp-2">
+                  ${product.shortDesc}
+                </p>
+              </div>
+            </div>
+
+            <div class="px-4 sm:px-5 pb-4 sm:pb-5 pt-2 flex items-center justify-between gap-2 border-t border-melora-border/50">
+              <div>
+                <span class="text-[10px] text-melora-muted block">From</span>
+                <span class="text-sm sm:text-base font-bold text-melora-primary">₹${product.price.toLocaleString('en-IN')}</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button type="button" onclick="openProductModal('${product.id}')" class="px-3 py-2 rounded-full border border-melora-border hover:bg-melora-blush text-[11px] font-medium text-melora-primary transition-colors">
+                  Customize
+                </button>
+                <button type="button" onclick="quickAddProduct('${product.id}')" class="px-3.5 py-2 rounded-full bg-melora-cocoaDark hover:bg-melora-warm text-white text-[11px] font-semibold transition-colors">
+                  + Add
+                </button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // ---------- 5. PRODUCT CUSTOMIZATION MODAL ----------
+    function openProductModal(productId) {
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (!product) return;
+
+      modalState = {
+        product,
+        selectedSizeIndex: 0,
+        qty: 1
+      };
+
+      document.getElementById('pm-image').src = product.image;
+      document.getElementById('pm-image').alt = product.name;
+      document.getElementById('pm-dietary-badge').textContent = product.dietary;
+      document.getElementById('pm-category').textContent = product.category;
+      document.getElementById('pm-rating').textContent = `★ ${product.rating} reviews`;
+      document.getElementById('pm-title').textContent = product.name;
+      document.getElementById('pm-desc').textContent = product.shortDesc;
+      document.getElementById('pm-allergens').textContent = product.allergens;
+      document.getElementById('pm-inscription').value = '';
+      document.getElementById('pm-qty').textContent = '1';
+
+      // Default tomorrow's date
+      const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+      document.getElementById('pm-delivery-date').value = tomorrow;
+
+      renderModalSizes();
+      updateModalWishlistBtn();
+      showOverlay('product-modal', 'flex');
+    }
+
+    function renderModalSizes() {
+      const { product, selectedSizeIndex } = modalState;
+      const container = document.getElementById('pm-size-options');
+
+      container.innerHTML = product.sizes.map((sz, idx) => {
+        const active = idx === selectedSizeIndex;
+        const price = product.price + sz.delta;
+        return `
+          <button type="button" onclick="selectModalSize(${idx})"
+            class="p-2.5 rounded-xl text-left border transition-all ${active ? 'border-2 border-melora-cocoaDark bg-melora-blush/70' : 'border-melora-border bg-white hover:bg-melora-cream'}">
+            <span class="block text-xs font-semibold text-melora-primary">${sz.label}</span>
+            <span class="block text-[11px] text-melora-warm font-medium mt-0.5">₹${price.toLocaleString('en-IN')}</span>
+          </button>
+        `;
+      }).join('');
+
+      const activeSize = product.sizes[selectedSizeIndex];
+      const totalUnit = product.price + activeSize.delta;
+      document.getElementById('pm-price').textContent = `₹${totalUnit.toLocaleString('en-IN')}`;
+    }
+
+    function selectModalSize(idx) {
+      modalState.selectedSizeIndex = idx;
+      renderModalSizes();
+    }
+
+    function adjustModalQty(delta) {
+      modalState.qty = Math.max(1, Math.min(20, modalState.qty + delta));
+      document.getElementById('pm-qty').textContent = modalState.qty;
+    }
+
+    function updateModalWishlistBtn() {
+      if (!modalState.product) return;
+      const isWished = wishlistIds.includes(modalState.product.id);
+      const btn = document.getElementById('pm-wishlist-btn');
+      btn.textContent = isWished ? '♥' : '♡';
+      btn.classList.toggle('text-melora-roseDeep', isWished);
+    }
+
+    function toggleCurrentModalWishlist() {
+      if (!modalState.product) return;
+      toggleWishlist(modalState.product.id);
+      updateModalWishlistBtn();
+    }
+
+    function confirmAddFromModal() {
+      const { product, selectedSizeIndex, qty } = modalState;
+      if (!product) return;
+
+      const sizeObj = product.sizes[selectedSizeIndex];
+      const inscription = document.getElementById('pm-inscription').value.trim();
+      const unitPrice = product.price + sizeObj.delta;
+      const uid = `${product.id}-${selectedSizeIndex}-${inscription}`;
+
+      addItemToCart({
+        uid,
+        productId: product.id,
+        name: product.name,
+        sizeLabel: sizeObj.label,
+        unitPrice,
+        qty,
+        inscription,
+        image: product.image
+      });
+
+      closeAllOverlays();
+      openCartDrawer();
+    }
+
+    function quickAddProduct(productId) {
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (!product) return;
+      const sizeObj = product.sizes[0];
+      addItemToCart({
+        uid: `${product.id}-0-`,
+        productId: product.id,
+        name: product.name,
+        sizeLabel: sizeObj.label,
+        unitPrice: product.price,
+        qty: 1,
+        inscription: '',
+        image: product.image
+      });
+      showToast(`Added "${product.name}" to your MÉLORA bag.`);
+    }
+
+    // ---------- 6. SHOPPING BAG & WISHLIST LOGIC ----------
+    function addItemToCart(newItem) {
+      const existing = cart.find(item => item.uid === newItem.uid);
+      if (existing) {
+        existing.qty += newItem.qty;
+      } else {
+        cart.push(newItem);
+      }
+      renderCart();
+    }
+
+    function updateCartQty(uid, delta) {
+      const idx = cart.findIndex(item => item.uid === uid);
+      if (idx === -1) return;
+      cart[idx].qty += delta;
+      if (cart[idx].qty <= 0) {
+        cart.splice(idx, 1);
+      }
+      renderCart();
+    }
+
+    function removeCartItem(uid) {
+      cart = cart.filter(item => item.uid !== uid);
+      renderCart();
+    }
+
+    function renderCart() {
+      const totalCount = cart.reduce((acc, item) => acc + item.qty, 0);
+      const subtotal = cart.reduce((acc, item) => acc + item.unitPrice * item.qty, 0);
+      const discount = promoApplied ? Math.round(subtotal * 0.1) : 0;
+      const freeShippingThreshold = 2500;
+      const shipping = subtotal === 0 ? 0 : (subtotal - discount >= freeShippingThreshold ? 0 : 150);
+      const finalTotal = Math.max(0, subtotal - discount + shipping);
+
+      // Update Header Badge
+      const badge = document.getElementById('cart-badge');
+      badge.textContent = totalCount;
+      badge.classList.toggle('hidden', totalCount === 0);
+
+      document.getElementById('cart-subtitle').textContent =
+        totalCount === 1 ? '1 handcrafted creation selected' : `${totalCount} handcrafted creations selected`;
+
+      // Update Free Delivery Progress
+      const progressText = document.getElementById('delivery-progress-text');
+      const progressBar = document.getElementById('delivery-progress-bar');
+      if (subtotal >= freeShippingThreshold) {
+        progressText.textContent = 'Complimentary white-glove chilled delivery unlocked!';
+        progressBar.style.width = '100%';
+      } else {
+        const remaining = freeShippingThreshold - subtotal;
+        progressText.textContent = `Add ₹${remaining.toLocaleString('en-IN')} more for complimentary chilled delivery`;
+        progressBar.style.width = `${Math.min(100, Math.round((subtotal / freeShippingThreshold) * 100))}%`;
+      }
+
+      // Render Items
+      const listEl = document.getElementById('cart-items-list');
+      if (cart.length === 0) {
+        listEl.innerHTML = `
+          <div class="text-center py-12">
+            <p class="font-editorial text-2xl text-melora-primary">Your bag is currently empty</p>
+            <p class="text-xs text-melora-muted mt-1.5">Explore our signature tarts, macarons, and Belgian chocolate creations.</p>
+            <button type="button" onclick="closeAllOverlays(); scrollToElement('signature-delights')" class="mt-5 px-6 py-2.5 rounded-full bg-melora-cocoaDark text-white text-xs font-semibold">
+              Discover Desserts
+            </button>
+          </div>
+        `;
+      } else {
+        listEl.innerHTML = cart.map(item => `
+          <div class="flex gap-3.5 bg-white p-3.5 rounded-2xl border border-melora-border shadow-xs">
+            <img src="${item.image}" alt="${item.name}" class="w-20 h-20 rounded-xl object-cover shrink-0 bg-melora-blush" />
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-2">
+                <h3 class="font-editorial text-base font-semibold text-melora-primary leading-tight">${item.name}</h3>
+                <button type="button" onclick="removeCartItem('${item.uid}')" aria-label="Remove ${item.name}" class="text-xs text-melora-muted hover:text-rose-700">✕</button>
+              </div>
+              <p class="text-[11px] text-melora-muted mt-0.5">${item.sizeLabel}</p>
+              ${item.inscription ? `<p class="text-[10.5px] italic text-melora-warm mt-0.5">Plaque: “${item.inscription}”</p>` : ''}
+              <div class="flex items-center justify-between mt-2.5">
+                <div class="inline-flex items-center border border-melora-border rounded-full bg-melora-cream">
+                  <button type="button" onclick="updateCartQty('${item.uid}', -1)" aria-label="Decrease quantity" class="w-7 h-7 text-xs font-bold">−</button>
+                  <span class="px-2 text-xs font-semibold">${item.qty}</span>
+                  <button type="button" onclick="updateCartQty('${item.uid}', 1)" aria-label="Increase quantity" class="w-7 h-7 text-xs font-bold">+</button>
+                </div>
+                <span class="text-xs font-bold text-melora-primary">₹${(item.unitPrice * item.qty).toLocaleString('en-IN')}</span>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('cart-subtotal').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+      const discountRow = document.getElementById('cart-discount-row');
+      if (promoApplied && subtotal > 0) {
+        discountRow.classList.remove('hidden');
+        discountRow.classList.add('flex');
+        document.getElementById('cart-discount').textContent = `-₹${discount.toLocaleString('en-IN')}`;
+      } else {
+        discountRow.classList.add('hidden');
+        discountRow.classList.remove('flex');
+      }
+      document.getElementById('cart-shipping').textContent = shipping === 0 ? 'Complimentary' : `₹${shipping}`;
+      document.getElementById('cart-total').textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
+      document.getElementById('co-payable').textContent = `₹${finalTotal.toLocaleString('en-IN')}`;
+      document.getElementById('checkout-btn').disabled = cart.length === 0;
+      document.getElementById('checkout-btn').classList.toggle('opacity-50', cart.length === 0);
+    }
+
+    function toggleWishlist(productId) {
+      const idx = wishlistIds.indexOf(productId);
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (idx === -1) {
+        wishlistIds.push(productId);
+        if (product) showToast(`Saved "${product.name}" to your favorites.`);
+      } else {
+        wishlistIds.splice(idx, 1);
+        if (product) showToast(`Removed "${product.name}" from favorites.`);
+      }
+      updateWishlistBadge();
+      renderProductGrid();
+      renderWishlistDrawer();
+    }
+
+    function updateWishlistBadge() {
+      const badge = document.getElementById('wishlist-badge');
+      badge.textContent = wishlistIds.length;
+      badge.classList.toggle('hidden', wishlistIds.length === 0);
+    }
+
+    function renderWishlistDrawer() {
+      const container = document.getElementById('wishlist-items-list');
+      if (wishlistIds.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12">
+            <p class="font-editorial text-2xl text-melora-primary">No saved favorites yet</p>
+            <p class="text-xs text-melora-muted mt-1.5">Tap the heart icon on any pastry or cake to save it for later.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = wishlistIds.map(id => {
+        const p = PRODUCTS.find(item => item.id === id);
+        if (!p) return '';
+        return `
+          <div class="flex gap-3.5 bg-white p-3.5 rounded-2xl border border-melora-border items-center">
+            <img src="${p.image}" alt="${p.name}" class="w-16 h-16 rounded-xl object-cover shrink-0" />
+            <div class="flex-1 min-w-0">
+              <h3 class="font-editorial text-base font-semibold text-melora-primary truncate">${p.name}</h3>
+              <p class="text-xs font-bold text-melora-warm mt-0.5">₹${p.price.toLocaleString('en-IN')}</p>
+              <div class="flex items-center gap-2 mt-2">
+                <button type="button" onclick="quickAddProduct('${p.id}'); closeAllOverlays(); openCartDrawer();" class="px-3 py-1 rounded-full bg-melora-cocoaDark text-white text-[11px] font-semibold">
+                  Move to Bag
+                </button>
+                <button type="button" onclick="toggleWishlist('${p.id}')" class="text-[11px] text-melora-muted hover:text-rose-700">
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ---------- 7. GIFT BOX BUILDER ----------
+    function openGiftBoxBuilder() {
+      selectGiftBoxSize(0);
+      showOverlay('giftbox-modal', 'flex');
+    }
+
+    function selectGiftBoxSize(idx) {
+      giftBoxState.tierIndex = idx;
+      document.querySelectorAll('.gb-size-btn').forEach((btn, i) => {
+        if (i === idx) {
+          btn.classList.remove('border', 'border-melora-border', 'bg-white');
+          btn.classList.add('border-2', 'border-melora-cocoaDark', 'bg-melora-blush/60');
+        } else {
+          btn.classList.remove('border-2', 'border-melora-cocoaDark', 'bg-melora-blush/60');
+          btn.classList.add('border', 'border-melora-border', 'bg-white');
+        }
+      });
+      document.getElementById('gb-price-label').textContent = `₹${GIFT_BOX_TIERS[idx].price.toLocaleString('en-IN')}`;
+    }
+
+    function selectRibbon(ribbonName) {
+      giftBoxState.ribbon = ribbonName;
+      document.querySelectorAll('.ribbon-btn').forEach(btn => {
+        const active = btn.textContent.trim() === ribbonName;
+        if (active) {
+          btn.classList.remove('border', 'border-melora-border', 'bg-white');
+          btn.classList.add('border-2', 'border-melora-cocoaDark', 'bg-melora-blush');
+        } else {
+          btn.classList.remove('border-2', 'border-melora-cocoaDark', 'bg-melora-blush');
+          btn.classList.add('border', 'border-melora-border', 'bg-white');
+        }
+      });
+    }
+
+    function addGiftBoxToCart() {
+      const tier = GIFT_BOX_TIERS[giftBoxState.tierIndex];
+      const note = document.getElementById('gb-note').value.trim();
+      addItemToCart({
+        uid: `giftbox-${giftBoxState.tierIndex}-${giftBoxState.ribbon}-${note}`,
+        productId: 'custom-gift-box',
+        name: tier.name,
+        sizeLabel: `Ribbon: ${giftBoxState.ribbon}`,
+        unitPrice: tier.price,
+        qty: 1,
+        inscription: note,
+        image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=400&q=80'
+      });
+      closeAllOverlays();
+      openCartDrawer();
+    }
+
+    // ---------- 8. EDITORIAL MODALS (STORY, EXPERIENCE, JOURNAL, LOCATIONS) ----------
+    function openStoryModal() {
+      document.getElementById('ed-image').src = 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1000&q=85';
+      document.getElementById('ed-eyebrow').textContent = 'OUR ATELIER HERITAGE';
+      document.getElementById('ed-title').textContent = 'The Art of Making Sweet Moments';
+      document.getElementById('ed-body').innerHTML = `
+        <p>Founded with a devotion to slow, small-batch French pâtisserie, MÉLORA brings together single-origin Belgian couverture, Normandy cultured butter, and botanicals harvested at peak fragrance.</p>
+        <p>Every laminated croissant rests for 72 hours; every macaron shell is aged to achieve that signature delicate crispness yielding to a tender almond heart.</p>
+      `;
+      showOverlay('editorial-modal', 'flex');
+    }
+
+    function openExperienceModal() {
+      document.getElementById('ed-image').src = 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1000&q=85';
+      document.getElementById('ed-eyebrow').textContent = 'THE MÉLORA EXPERIENCE';
+      document.getElementById('ed-title').textContent = '72% Molten Belgian Chocolate Ganache Dome';
+      document.getElementById('ed-body').innerHTML = `
+        <p>A theatrical tableside centerpiece: pour warm salted caramel over the tempered dark chocolate sphere to reveal layers of roasted Piedmont hazelnut praline, chocolate sponge, and 24K edible gold leaf.</p>
+        <div class="pt-2">
+          <button type="button" onclick="closeAllOverlays(); openProductModal('belgian-chocolate-dome')" class="px-5 py-2.5 rounded-full bg-melora-warm text-white text-xs font-semibold">
+            Customize &amp; Order This Creation →
+          </button>
+        </div>
+      `;
+      showOverlay('editorial-modal', 'flex');
+    }
+
+    function openJournalModal(idx) {
+      const article = JOURNAL_ARTICLES[idx] || JOURNAL_ARTICLES[0];
+      document.getElementById('ed-image').src = article.image;
+      document.getElementById('ed-eyebrow').textContent = article.eyebrow;
+      document.getElementById('ed-title').textContent = article.title;
+      document.getElementById('ed-body').innerHTML = article.paragraphs.map(p => `<p>${p}</p>`).join('');
+      showOverlay('editorial-modal', 'flex');
+    }
+
+    function openLocationsModal() {
+      document.getElementById('ed-image').src = 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1000&q=85';
+      document.getElementById('ed-eyebrow').textContent = 'BOUTIQUES & SALONS DE THÉ';
+      document.getElementById('ed-title').textContent = 'Visit MÉLORA Flagship Salons';
+      document.getElementById('ed-body').innerHTML = `
+        <p><strong>Chennai Flagship Salon:</strong> 24 Khader Nawaz Khan Road, Nungambakkam · Open Daily 9:00 AM – 11:00 PM</p>
+        <p><strong>Bengaluru Boutique:</strong> 12th Main Road, Indiranagar · Open Daily 10:00 AM – 10:30 PM</p>
+        <p><strong>Concierge &amp; Bespoke Cake Orders:</strong> +91 44 2833 9400 · concierge@melorapatisserie.in</p>
+      `;
+      showOverlay('editorial-modal', 'flex');
+    }
+
+    function openAccountModal() {
+      document.getElementById('ed-image').src = 'https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&w=1000&q=85';
+      document.getElementById('ed-eyebrow').textContent = 'MÉLORA PRIVÉ';
+      document.getElementById('ed-title').textContent = 'Sweet Rewards & Member Privileges';
+      document.getElementById('ed-body').innerHTML = `
+        <p>Welcome back to MÉLORA Privé. Use code <strong>MELORA10</strong> in your shopping bag to enjoy 10% off your handcrafted order, plus complimentary birthday macaron coffrets.</p>
+      `;
+      showOverlay('editorial-modal', 'flex');
+    }
+
+    function openPolicyModal(title) {
+      document.getElementById('ed-image').src = 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=1000&q=85';
+      document.getElementById('ed-eyebrow').textContent = 'CLIENT CARE';
+      document.getElementById('ed-title').textContent = title;
+      document.getElementById('ed-body').innerHTML = `
+        <p>Every MÉLORA creation is baked to order and inspected by our head pastry chef prior to chilled dispatch. If your order arrives anything less than perfection, contact our concierge within 2 hours of receipt for an immediate complimentary replacement.</p>
+      `;
+      showOverlay('editorial-modal', 'flex');
+    }
+
+    // ---------- 9. TESTIMONIALS & FAQ ACCORDION ----------
+    function stepTestimonial(dir) {
+      currentTestimonialIdx = (currentTestimonialIdx + dir + TESTIMONIALS.length) % TESTIMONIALS.length;
+      const t = TESTIMONIALS[currentTestimonialIdx];
+      document.getElementById('testimonial-quote').textContent = t.quote;
+      document.getElementById('testimonial-author').textContent = t.author;
+      document.getElementById('testimonial-avatar').src = t.avatar;
+    }
+
+    function renderFaqAccordion() {
+      const container = document.getElementById('faq-accordion');
+      container.innerHTML = FAQS.map((item, idx) => `
+        <div class="bg-white/90 rounded-2xl border border-melora-border overflow-hidden shadow-xs">
+          <button type="button" aria-expanded="${idx === 0 ? 'true' : 'false'}" onclick="toggleFaq(${idx})"
+            class="faq-trigger w-full px-6 py-4.5 text-left flex items-center justify-between gap-4 hover:bg-melora-cream/60 transition-colors">
+            <span class="font-editorial text-lg sm:text-xl font-semibold text-melora-primary">${item.q}</span>
+            <span class="faq-chevron w-7 h-7 rounded-full border border-melora-border flex items-center justify-center text-xs text-melora-warm shrink-0 transition-transform duration-300 ${idx === 0 ? 'rotate-180 bg-melora-blush' : ''}">
+              ▼
+            </span>
+          </button>
+          <div class="accordion-panel ${idx === 0 ? 'is-open' : ''}">
+            <div class="accordion-inner">
+              <div class="px-6 pb-5 pt-1 text-xs sm:text-sm text-melora-muted leading-relaxed border-t border-melora-border/50">
+                ${item.a}
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleFaq(index) {
+      const triggers = document.querySelectorAll('.faq-trigger');
+      const panels = document.querySelectorAll('.accordion-panel');
+      const chevrons = document.querySelectorAll('.faq-chevron');
+
+      triggers.forEach((btn, idx) => {
+        const isTarget = idx === index;
+        const currentlyOpen = btn.getAttribute('aria-expanded') === 'true';
+        const nextOpen = isTarget ? !currentlyOpen : false;
+
+        btn.setAttribute('aria-expanded', nextOpen ? 'true' : 'false');
+        panels[idx].classList.toggle('is-open', nextOpen);
+        chevrons[idx].classList.toggle('rotate-180', nextOpen);
+        chevrons[idx].classList.toggle('bg-melora-blush', nextOpen);
+      });
+    }
+
+    // ---------- 10. LIVE SEARCH OVERLAY ----------
+    function openSearchModal() {
+      showOverlay('search-modal', 'flex');
+      const input = document.getElementById('live-search-input');
+      input.value = '';
+      renderSearchResults('');
+      setTimeout(() => input.focus(), 60);
+    }
+
+    function renderSearchResults(query) {
+      const q = query.trim().toLowerCase();
+      const matches = PRODUCTS.filter(p =>
+        p.name.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q) ||
+        p.shortDesc.toLowerCase().includes(q)
+      );
+
+      const list = document.getElementById('search-results-list');
+      if (matches.length === 0) {
+        list.innerHTML = `<p class="py-8 text-center text-xs text-melora-muted">No desserts matched “${query}”. Try “pistachio”, “chocolate”, or “strawberry”.</p>`;
+        return;
+      }
+
+      list.innerHTML = matches.map(p => `
+        <button type="button" onclick="closeAllOverlays(); openProductModal('${p.id}')"
+          class="w-full py-3 px-2 flex items-center gap-3.5 hover:bg-melora-blush/60 rounded-xl text-left transition-colors">
+          <img src="${p.image}" alt="${p.name}" class="w-12 h-12 rounded-xl object-cover shrink-0" />
+          <div class="flex-1 min-w-0">
+            <p class="font-editorial text-base font-semibold text-melora-primary truncate">${p.name}</p>
+            <p class="text-[11px] text-melora-muted truncate">${p.category} · ${p.dietary}</p>
+          </div>
+          <span class="text-xs font-bold text-melora-warm shrink-0">₹${p.price.toLocaleString('en-IN')}</span>
+        </button>
+      `).join('');
+    }
+
+    // ---------- 11. OVERLAY, DRAWER & CHECKOUT MANAGEMENT ----------
+    function showBackdrop() {
+      const bd = document.getElementById('global-backdrop');
+      bd.classList.remove('hidden');
+      requestAnimationFrame(() => bd.classList.remove('opacity-0'));
+    }
+
+    function showOverlay(id, displayClass = 'flex') {
+      closeAllOverlays(false);
+      showBackdrop();
+      const el = document.getElementById(id);
+      el.classList.remove('hidden');
+      if (displayClass) el.classList.add(displayClass);
+    }
+
+    function openMobileMenu() {
+      closeAllOverlays(false);
+      showBackdrop();
+      const drawer = document.getElementById('mobile-nav-drawer');
+      drawer.classList.remove('translate-x-full');
+      drawer.setAttribute('aria-hidden', 'false');
+      document.getElementById('mobile-menu-trigger').setAttribute('aria-expanded', 'true');
+    }
+
+    function openCartDrawer() {
+      closeAllOverlays(false);
+      showBackdrop();
+      renderCart();
+      document.getElementById('cart-drawer').classList.remove('translate-x-full');
+    }
+
+    function openWishlistDrawer() {
+      closeAllOverlays(false);
+      showBackdrop();
+      renderWishlistDrawer();
+      document.getElementById('wishlist-drawer').classList.remove('translate-x-full');
+    }
+
+    function openCheckoutModal() {
+      if (cart.length === 0) return;
+      document.getElementById('checkout-form-view').classList.remove('hidden');
+      document.getElementById('checkout-success-view').classList.add('hidden');
+      showOverlay('checkout-modal', 'flex');
+    }
+
+    function closeAllOverlays(hideBd = true) {
+      ['product-modal', 'giftbox-modal', 'editorial-modal', 'search-modal', 'checkout-modal'].forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.add('hidden');
+        el.classList.remove('flex');
+      });
+
+      const mobileDrawer = document.getElementById('mobile-nav-drawer');
+      mobileDrawer.classList.add('translate-x-full');
+      mobileDrawer.setAttribute('aria-hidden', 'true');
+      document.getElementById('mobile-menu-trigger').setAttribute('aria-expanded', 'false');
+
+      document.getElementById('cart-drawer').classList.add('translate-x-full');
+      document.getElementById('wishlist-drawer').classList.add('translate-x-full');
+
+      if (hideBd) {
+        const bd = document.getElementById('global-backdrop');
+        bd.classList.add('opacity-0');
+        setTimeout(() => bd.classList.add('hidden'), 250);
+      }
+    }
+
+    // ---------- 12. UTILITIES, FORMS & KEYBOARD SUPPORT ----------
+    function scrollToElement(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function showToast(message) {
+      const stack = document.getElementById('toast-stack');
+      const toast = document.createElement('div');
+      toast.className = 'pointer-events-auto bg-melora-cocoaDark text-melora-page text-xs font-medium px-4 py-3 rounded-2xl shadow-editorial border border-melora-gold/30 flex items-center justify-between gap-3 transition-all';
+      toast.innerHTML = `<span>${message}</span><span class="text-melora-gold">✦</span>`;
+      stack.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3200);
+    }
+
+    // Event Listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      renderHeroSlide();
+      renderProductGrid();
+      renderFaqAccordion();
+      renderCart();
+      updateWishlistBadge();
+
+      // Live search input
+      document.getElementById('live-search-input').addEventListener('input', e => {
+        renderSearchResults(e.target.value);
+      });
+
+      // Promo code form
+      document.getElementById('promo-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const code = document.getElementById('promo-input').value.trim().toUpperCase();
+        const status = document.getElementById('promo-status');
+        if (code === 'MELORA10') {
+          promoApplied = true;
+          status.textContent = 'Privilege code MELORA10 applied — 10% off your order.';
+          status.classList.remove('hidden', 'text-rose-700');
+          status.classList.add('text-emerald-700');
+          renderCart();
+        } else {
+          status.textContent = 'Invalid code. Try MELORA10 for 10% atelier privilege.';
+          status.classList.remove('hidden', 'text-emerald-700');
+          status.classList.add('text-rose-700');
+        }
+      });
+
+      // Express Checkout Form Submission
+      document.getElementById('checkout-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const name = document.getElementById('co-name').value.trim() || 'Guest';
+        const orderNum = `MLR-${Math.floor(1000 + Math.random() * 9000)}`;
+        document.getElementById('co-receipt-text').textContent =
+          `Merci, ${name}. Order #${orderNum} has been received by our pastry chefs and will arrive in chilled luxury packaging.`;
+        document.getElementById('checkout-form-view').classList.add('hidden');
+        document.getElementById('checkout-success-view').classList.remove('hidden');
+        cart = [];
+        promoApplied = false;
+        renderCart();
+      });
+
+      // Newsletter Validation
+      document.getElementById('newsletter-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const emailInput = document.getElementById('newsletter-email');
+        const feedback = document.getElementById('newsletter-feedback');
+        const val = emailInput.value.trim();
+        const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+
+        if (!valid) {
+          feedback.textContent = 'Please enter a valid email address.';
+          feedback.className = 'text-[11px] text-rose-700 min-h-[16px]';
+          emailInput.focus();
+          return;
+        }
+
+        feedback.textContent = 'Welcome to MÉLORA Privé — your sweet welcome note is on its way.';
+        feedback.className = 'text-[11px] text-emerald-700 font-medium min-h-[16px]';
+        emailInput.value = '';
+      });
+
+      // Escape Key Closes Any Open Modal or Drawer
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          closeAllOverlays();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
